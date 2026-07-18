@@ -125,22 +125,31 @@ body {
   animation: pulse-slow 4s ease-in-out infinite;
 }
 
-/* Marquee animation for services */
-@keyframes marquee {
+/* Marquee animation for services - scrolls right infinitely */
+@keyframes marquee-right {
   0% {
-    transform: translateX(0);
+    transform: translateX(-33.33%);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translateX(0%);
   }
 }
 
-.animate-marquee {
-  animation: marquee 25s linear infinite;
+.animate-marquee-right {
+  animation: marquee-right 30s linear infinite;
+  width: max-content;
 }
 
-.animate-marquee:hover {
-  animation-play-state: paused;
+/* Service card hover glow */
+.service-card {
+  cursor: pointer;
+}
+
+.service-card:hover {
+  border-color: var(--glow-color, rgba(168, 85, 247, 0.4));
+  box-shadow: 0 0 20px color-mix(in srgb, var(--glow-color, #a855f7) 40%, transparent),
+              0 0 40px color-mix(in srgb, var(--glow-color, #a855f7) 20%, transparent);
+  transform: translateY(-2px);
 }
 
 /* Nav */

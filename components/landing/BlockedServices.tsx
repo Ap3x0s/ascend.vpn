@@ -25,8 +25,8 @@ const services = [
   { icon: IconBrandNetflix, name: "Netflix", color: "#E50914" },
 ];
 
-// Duplicate for seamless loop
-const doubledServices = [...services, ...services];
+// Triple for seamless infinite loop
+const tripledServices = [...services, ...services, ...services];
 
 export function BlockedServices() {
   return (
@@ -48,17 +48,20 @@ export function BlockedServices() {
         </motion.div>
       </div>
 
-      {/* Scrolling marquee */}
-      <div className="relative">
+      {/* Infinite scrolling marquee - scrolls right */}
+      <div className="relative py-4">
         {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#08080f] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#08080f] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-40 bg-gradient-to-r from-[#08080f] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-[#08080f] to-transparent z-10 pointer-events-none" />
 
-        <div className="flex animate-marquee">
-          {doubledServices.map((service, i) => (
+        <div className="flex animate-marquee-right">
+          {tripledServices.map((service, i) => (
             <div
               key={`${service.name}-${i}`}
-              className="glass flex items-center gap-3 px-5 py-3 mx-2 shrink-0 transition-all hover:border-accent-purple/30"
+              className="service-card flex items-center gap-3 px-5 py-3 mx-2 shrink-0 rounded-2xl border border-white/[0.06] bg-[rgba(12,12,22,0.9)] backdrop-blur-sm transition-all duration-300"
+              style={{
+                "--glow-color": service.color,
+              } as React.CSSProperties}
             >
               <service.icon
                 className="h-5 w-5"

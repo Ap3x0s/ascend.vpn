@@ -3,6 +3,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Hero } from "@/components/landing/Hero";
 import { Features } from "@/components/landing/Features";
 import { PricingPreview } from "@/components/landing/PricingPreview";
+import { FAQ } from "@/components/landing/FAQ";
 import { Footer } from "@/components/layout/Footer";
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
         <Hero />
         <Features />
         <PricingPreview />
+        <FAQ />
       </main>
       <Footer />
     </>

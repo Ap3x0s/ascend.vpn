@@ -28,7 +28,7 @@ export function Platforms() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
@@ -46,8 +46,8 @@ export function Platforms() {
               key={platform.name}
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.4, delay: i * 0.06 }}
               className="glass flex flex-col items-center gap-3 p-6 w-28 transition-all hover:border-accent-purple/30 hover:shadow-glow-sm"
             >
               <platform.icon className="h-10 w-10 text-accent-purple" />

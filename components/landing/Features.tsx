@@ -8,48 +8,48 @@ const features = [
     icon: IconLock,
     title: "256-битное шифрование",
     description:
-      "Военное шифрование AES-256 защищает ваши данные от хакеров, перехвата и слежки. Ваш трафик полностью зашифрован.",
+      "Военное шифрование AES-256 защищает ваши данные от хакеров, перехвата и слежки.",
   },
   {
     icon: IconBolt,
     title: "Молниеносная скорость",
     description:
-      "Серверы с пропускной способностью 10 Гбит/с. Стримьте 4K, играйте онлайн без задержек и пинга.",
+      "Серверы с пропускной способностью 10 Гбит/с. Стримьте 4K без задержек.",
   },
   {
     icon: IconWorld,
     title: "50+ серверов",
     description:
-      "Серверы в 30+ странах мира. Обходите блокировки, получайте доступ к Netflix, YouTube, Telegram из любой точки.",
+      "Серверы в 30+ странах. Обходите блокировки и получайте доступ к любому контенту.",
   },
   {
     icon: IconEyeOff,
     title: "Политика без логов",
     description:
-      "Мы не храним, не собираем и не передаём данные о вашей активности. Абсолютная приватность гарантирована.",
+      "Мы не храним данные о вашей активности. Абсолютная приватность гарантирована.",
   },
   {
     icon: IconHeadset,
     title: "Поддержка 24/7",
     description:
-      "Наша команда готова помочь в любое время суток. Быстрые ответы и решение проблем за минуты.",
+      "Наша команда готова помочь в любое время суток. Быстрые ответы за минуты.",
   },
   {
     icon: IconDiscount,
     title: "Выгодные тарифы",
     description:
-      "От 299₽ в месяц. Чем дольше подписка — тем больше экономия. Никаких скрытых платежей.",
+      "От 299₽ в месяц. Чем дольше подписка — тем больше экономия.",
   },
 ];
 
 export function Features() {
   return (
-    <section id="features" className="py-20 px-4 scroll-mt-20">
+    <section id="features" className="py-20 px-4">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
@@ -57,8 +57,7 @@ export function Features() {
             Почему <span className="gradient-text">ASCEND.VPN</span>?
           </h2>
           <p className="text-muted max-w-2xl mx-auto">
-            Мы предоставляем лучший VPN-сервис с передовыми технологиями
-            безопасности и максимальной скоростью для ваших устройств.
+            Передовые технологии безопасности и максимальная скорость.
           </p>
         </motion.div>
 
@@ -68,8 +67,8 @@ export function Features() {
               key={feature.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.5, delay: i * 0.08 }}
             >
               <div className="glass interactive h-full p-6">
                 <div className="mb-4 inline-flex rounded-xl bg-accent-purple/10 p-3">

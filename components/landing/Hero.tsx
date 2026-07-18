@@ -69,7 +69,7 @@ export function Hero() {
 
       {/* Stats grid */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.8 }}
         className="mt-20 grid w-full max-w-4xl grid-cols-2 gap-4 sm:grid-cols-4"

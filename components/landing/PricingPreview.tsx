@@ -41,12 +41,12 @@ const plans = [
 
 export function PricingPreview() {
   return (
-    <section id="pricing" className="py-20 px-4 scroll-mt-20">
+    <section id="pricing" className="py-20 px-4">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
@@ -64,8 +64,8 @@ export function PricingPreview() {
               key={plan.name}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.5, delay: i * 0.08 }}
             >
               <div
                 className={`glass relative flex flex-col h-full p-6 ${

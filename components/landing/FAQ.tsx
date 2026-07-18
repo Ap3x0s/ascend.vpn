@@ -8,27 +8,27 @@ const faqItems = [
   {
     question: "Что такое VPN?",
     answer:
-      "VPN (Virtual Private Network) — это технология, которая создаёт зашифрованное соединение между вашим устройством и интернетом. Он скрывает ваш реальный IP-адрес, шифрует весь интернет-трафик и защищает ваши данные от перехвата.",
+      "VPN (Virtual Private Network) — это технология, которая создаёт зашифрованное соединение между вашим устройством и интернетом. Он скрывает ваш IP и защищает данные.",
   },
   {
     question: "Как подключиться к VPN?",
     answer:
-      "Процесс прост: зарегистрируйтесь на нашем сайте, скачайте приложение для вашей операционной системы, войдите в аккаунт и нажмите кнопку «Подключить». Весь процесс занимает буквально пару минут.",
+      "Зарегистрируйтесь, скачайте приложение, войдите в аккаунт и нажмите «Подключить». Весь процесс занимает пару минут.",
   },
   {
     question: "Какие устройства поддерживаются?",
     answer:
-      "ASCEND.VPN доступен на всех популярных платформах: Windows, macOS, Linux, iOS, Android. Также мы поддерживаем подключение через роутеры.",
+      "Windows, macOS, Linux, iOS, Android, планшеты и Smart TV. Также поддерживаем роутеры.",
   },
   {
     question: "Можно ли использовать на нескольких устройствах?",
     answer:
-      "Да! Количество подключённых устройств зависит от выбранного плана: от 3 до 10 устройств одновременно.",
+      "Да! От 3 до 10 устройств одновременно в зависимости от тарифа.",
   },
   {
     question: "Ваши данные в безопасности?",
     answer:
-      "Абсолютно. Мы используем 256-битное AES-шифрование — тот же стандарт, который применяют военные и банковские системы. Мы придерживаемся строгой политики отсутствия логов.",
+      "Абсолютно. Мы используем 256-битное шифрование и не храним логи активности.",
   },
 ];
 
@@ -36,12 +36,12 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-20 px-4 scroll-mt-20">
+    <section id="faq" className="py-20 px-4">
       <div className="max-w-3xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
@@ -49,7 +49,7 @@ export function FAQ() {
             Частые <span className="gradient-text">вопросы</span>
           </h2>
           <p className="text-muted max-w-2xl mx-auto">
-            Не нашли ответ? Свяжитесь с нашей поддержкой, и мы поможем.
+            Не нашли ответ? Свяжитесь с поддержкой.
           </p>
         </motion.div>
 
@@ -57,9 +57,9 @@ export function FAQ() {
           {faqItems.map((item, index) => (
             <motion.div
               key={item.question}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
               className={`glass overflow-hidden transition-all ${
                 openIndex === index ? "border-accent-purple/30" : ""

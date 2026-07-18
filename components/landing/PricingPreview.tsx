@@ -73,7 +73,7 @@ export function PricingPreview() {
                 }`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-accent-purple to-accent-cyan px-4 py-1 text-xs font-bold text-white shadow-glow">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-accent-purple to-accent-violet px-4 py-1 text-xs font-bold text-white shadow-glow">
                     Популярный
                   </div>
                 )}
@@ -87,7 +87,7 @@ export function PricingPreview() {
                   <p className="text-dim text-sm mt-1">{plan.perDay}</p>
                 </div>
 
-                <p className="text-sm text-accent-cyan font-medium mb-5">
+                <p className="text-sm text-accent-blue font-medium mb-5">
                   {plan.devices}
                 </p>
 
@@ -107,7 +107,7 @@ export function PricingPreview() {
                   href="/register"
                   className={`block w-full py-3 rounded-xl text-center text-sm font-semibold transition-all ${
                     plan.popular
-                      ? "bg-gradient-to-r from-accent-purple to-accent-cyan text-white shadow-glow hover:scale-105"
+                      ? "bg-gradient-to-r from-accent-purple to-accent-violet text-white shadow-glow hover:scale-105"
                       : "bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:border-accent-purple/30"
                   }`}
                 >

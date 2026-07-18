@@ -150,11 +150,11 @@ export function RegisterForm() {
             />
             <Label htmlFor="terms" className="text-xs text-gray-400">
               Я принимаю{" "}
-              <Link href="#" className="text-accent-cyan hover:underline">
+              <Link href="#" className="text-accent-purple hover:underline">
                 условия использования
               </Link>{" "}
               и{" "}
-              <Link href="#" className="text-accent-cyan hover:underline">
+              <Link href="#" className="text-accent-purple hover:underline">
                 политику конфиденциальности
               </Link>
             </Label>
@@ -169,7 +169,7 @@ export function RegisterForm() {
       <CardFooter className="justify-center">
         <p className="text-sm text-gray-400">
           Уже есть аккаунт?{" "}
-          <Link href="/login" className="text-accent-cyan hover:underline">
+          <Link href="/login" className="text-accent-purple hover:underline">
             Войти
           </Link>
         </p>

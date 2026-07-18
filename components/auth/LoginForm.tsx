@@ -96,7 +96,7 @@ export function LoginForm() {
               <Label htmlFor="password">Пароль</Label>
               <Link
                 href="/forgot-password"
-                className="text-xs text-accent-cyan hover:underline"
+                className="text-xs text-accent-purple hover:underline"
               >
                 Забыли пароль?
               </Link>
@@ -124,7 +124,7 @@ export function LoginForm() {
       <CardFooter className="justify-center">
         <p className="text-sm text-gray-400">
           Нет аккаунта?{" "}
-          <Link href="/register" className="text-accent-cyan hover:underline">
+          <Link href="/register" className="text-accent-purple hover:underline">
             Зарегистрироваться
           </Link>
         </p>

@@ -54,34 +54,31 @@ export function StatsOverview({
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
       <Card>
         <CardContent className="p-6 flex items-center gap-4">
-          <div className="p-3 rounded-lg bg-accent-purple/20">
+          <div className="p-3 rounded-xl bg-accent-purple/15">
             <IconShieldCheck className="w-6 h-6 text-accent-purple" />
           </div>
           <div>
-            <p className="text-sm text-gray-400">Статус</p>
-            <p className="text-lg font-semibold">
+            <p className="text-sm text-muted">Статус</p>
+            <p className="text-lg font-semibold text-white">
               {isActive ? "Активна" : "Неактивна"}
             </p>
-            <p className="text-xs text-gray-500">{planName}</p>
+            <p className="text-xs text-dim">{planName}</p>
           </div>
         </CardContent>
       </Card>
 
       <Card>
         <CardContent className="p-6 flex items-center gap-4">
-          <div className="p-3 rounded-lg bg-accent-cyan/20">
-            <IconClock className="w-6 h-6 text-accent-cyan" />
+          <div className="p-3 rounded-xl bg-accent-violet/15">
+            <IconClock className="w-6 h-6 text-accent-violet" />
           </div>
           <div className="flex-1">
-            <p className="text-sm text-gray-400">Осталось дней</p>
-            <p className="text-lg font-semibold">{daysLeft}</p>
+            <p className="text-sm text-muted">Осталось дней</p>
+            <p className="text-lg font-semibold text-white">{daysLeft}</p>
             <div className="mt-2 h-1.5 rounded-full bg-border overflow-hidden">
               <div
-                className="h-full rounded-full"
-                style={{
-                  width: `${progressWidth}%`,
-                  background: "linear-gradient(to right, #6c5ce7, #00cec9)",
-                }}
+                className="h-full rounded-full bg-gradient-to-r from-accent-purple to-accent-violet"
+                style={{ width: `${progressWidth}%` }}
               />
             </div>
           </div>
@@ -90,28 +87,28 @@ export function StatsOverview({
 
       <Card>
         <CardContent className="p-6 flex items-center gap-4">
-          <div className="p-3 rounded-lg bg-accent-purple/20">
-            <IconDeviceDesktop className="w-6 h-6 text-accent-purple" />
+          <div className="p-3 rounded-xl bg-accent-blue/15">
+            <IconDeviceDesktop className="w-6 h-6 text-accent-blue" />
           </div>
           <div>
-            <p className="text-sm text-gray-400">Устройства</p>
-            <p className="text-lg font-semibold">
+            <p className="text-sm text-muted">Устройства</p>
+            <p className="text-lg font-semibold text-white">
               {activeDevices} / {devicesCount}
             </p>
-            <p className="text-xs text-gray-500">активных</p>
+            <p className="text-xs text-dim">активных</p>
           </div>
         </CardContent>
       </Card>
 
       <Card>
         <CardContent className="p-6 flex items-center gap-4">
-          <div className="p-3 rounded-lg bg-accent-cyan/20">
-            <IconServer className="w-6 h-6 text-accent-cyan" />
+          <div className="p-3 rounded-xl bg-accent-purple/15">
+            <IconServer className="w-6 h-6 text-accent-purple" />
           </div>
           <div>
-            <p className="text-sm text-gray-400">Сервер</p>
-            <p className="text-lg font-semibold">Россия</p>
-            <p className="text-xs text-gray-500">Москва • 12ms</p>
+            <p className="text-sm text-muted">Сервер</p>
+            <p className="text-lg font-semibold text-white">Россия</p>
+            <p className="text-xs text-dim">Москва • 12ms</p>
           </div>
         </CardContent>
       </Card>

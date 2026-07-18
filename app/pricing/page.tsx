@@ -96,7 +96,7 @@ export default function PricingPage() {
                   <p className="mt-1 text-sm text-gray-400">{plan.perDay}</p>
                 </CardHeader>
                 <CardContent className="flex flex-col flex-1">
-                  <p className="text-center text-sm text-accent-cyan mb-4">
+                  <p className="text-center text-sm text-accent-blue mb-4">
                     {plan.devices}
                   </p>
                   <ul className="space-y-3 mb-6 flex-1">

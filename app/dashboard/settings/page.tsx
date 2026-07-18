@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Lock, Key, Bell } from "lucide-react";
+import { IconLock, IconKey, IconBell } from "@tabler/icons-react";
 
 export default function SettingsPage() {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -23,7 +23,7 @@ export default function SettingsPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Lock className="h-5 w-5 text-accent-purple" />
+              <IconLock className="h-5 w-5 text-accent-purple" />
               Изменение пароля
             </CardTitle>
             <CardDescription>
@@ -66,7 +66,7 @@ export default function SettingsPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Key className="h-5 w-5 text-accent-cyan" />
+              <IconKey className="h-5 w-5 text-accent-cyan" />
               Управление ключами
             </CardTitle>
             <CardDescription>
@@ -87,7 +87,7 @@ export default function SettingsPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Bell className="h-5 w-5 text-accent-purple" />
+              <IconBell className="h-5 w-5 text-accent-purple" />
               Уведомления
             </CardTitle>
             <CardDescription>

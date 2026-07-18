@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { ShieldCheck, Timer, MonitorSmartphone, Server } from "lucide-react";
+import { IconShieldCheck, IconClock, IconDeviceDesktop, IconServer } from "@tabler/icons-react";
 
 const PLAN_NAMES: Record<string, string> = {
   "30d": "30 дней",
@@ -55,7 +55,7 @@ export function StatsOverview({
       <Card>
         <CardContent className="p-6 flex items-center gap-4">
           <div className="p-3 rounded-lg bg-accent-purple/20">
-            <ShieldCheck className="w-6 h-6 text-accent-purple" />
+            <IconShieldCheck className="w-6 h-6 text-accent-purple" />
           </div>
           <div>
             <p className="text-sm text-gray-400">Статус</p>
@@ -70,7 +70,7 @@ export function StatsOverview({
       <Card>
         <CardContent className="p-6 flex items-center gap-4">
           <div className="p-3 rounded-lg bg-accent-cyan/20">
-            <Timer className="w-6 h-6 text-accent-cyan" />
+            <IconClock className="w-6 h-6 text-accent-cyan" />
           </div>
           <div className="flex-1">
             <p className="text-sm text-gray-400">Осталось дней</p>
@@ -91,7 +91,7 @@ export function StatsOverview({
       <Card>
         <CardContent className="p-6 flex items-center gap-4">
           <div className="p-3 rounded-lg bg-accent-purple/20">
-            <MonitorSmartphone className="w-6 h-6 text-accent-purple" />
+            <IconDeviceDesktop className="w-6 h-6 text-accent-purple" />
           </div>
           <div>
             <p className="text-sm text-gray-400">Устройства</p>
@@ -106,7 +106,7 @@ export function StatsOverview({
       <Card>
         <CardContent className="p-6 flex items-center gap-4">
           <div className="p-3 rounded-lg bg-accent-cyan/20">
-            <Server className="w-6 h-6 text-accent-cyan" />
+            <IconServer className="w-6 h-6 text-accent-cyan" />
           </div>
           <div>
             <p className="text-sm text-gray-400">Сервер</p>

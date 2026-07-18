@@ -4,7 +4,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import { IconCheck } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 
 const plans = [
@@ -102,7 +102,7 @@ export default function PricingPage() {
                   <ul className="space-y-3 mb-6 flex-1">
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-center gap-2 text-sm">
-                        <Check className="h-4 w-4 text-accent-teal shrink-0" />
+                        <IconCheck className="h-4 w-4 text-accent-teal shrink-0" />
                         <span>{feature}</span>
                       </li>
                     ))}
@@ -154,7 +154,7 @@ export default function PricingPage() {
                       <td key={i} className="text-center py-3 px-4">
                         {typeof val === "boolean" ? (
                           val ? (
-                            <Check className="h-4 w-4 text-accent-teal mx-auto" />
+                            <IconCheck className="h-4 w-4 text-accent-teal mx-auto" />
                           ) : (
                             <span className="text-gray-600">—</span>
                           )

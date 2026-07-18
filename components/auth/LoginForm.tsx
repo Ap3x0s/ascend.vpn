@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { Mail, Lock, Loader2, CheckCircle } from "lucide-react";
+import { IconMail, IconLock, IconRefresh, IconCircleCheck } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -64,7 +64,7 @@ export function LoginForm() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {registered && (
             <div className="flex items-center gap-2 rounded-lg border border-green-500/50 bg-green-500/10 p-3 text-sm text-green-400">
-              <CheckCircle className="h-4 w-4 shrink-0" />
+              <IconCircleCheck className="h-4 w-4 shrink-0" />
               Аккаунт успешно создан. Теперь вы можете войти.
             </div>
           )}
@@ -78,7 +78,7 @@ export function LoginForm() {
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+              <IconMail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
               <Input
                 id="email"
                 type="email"
@@ -102,7 +102,7 @@ export function LoginForm() {
               </Link>
             </div>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+              <IconLock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
               <Input
                 id="password"
                 type="password"
@@ -116,7 +116,7 @@ export function LoginForm() {
           </div>
 
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {loading && <IconRefresh className="mr-2 h-4 w-4 animate-spin" />}
             {loading ? "Вход..." : "Войти"}
           </Button>
         </form>

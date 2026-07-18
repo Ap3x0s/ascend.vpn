@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { IconChevronDown } from "@tabler/icons-react";
 
 const faqItems = [
   {
@@ -70,7 +70,7 @@ export function FAQ() {
                 className="w-full flex items-center justify-between p-5 text-left hover:bg-card/50 transition-colors"
               >
                 <span className="font-medium">{item.question}</span>
-                <ChevronDown
+                <IconChevronDown
                   className={`h-5 w-5 text-gray-400 flex-shrink-0 transition-transform duration-300 ${
                     openIndex === index ? "rotate-180" : ""
                   }`}

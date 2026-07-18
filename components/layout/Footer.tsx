@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Shield } from "lucide-react";
+import { IconShield } from "@tabler/icons-react";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
@@ -11,7 +11,7 @@ export function Footer() {
           {/* Brand */}
           <div>
             <Link href="/" className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-accent-purple" />
+              <IconShield className="h-5 w-5 text-accent-purple" />
               <span className="text-lg font-bold gradient-text">ASCEND.VPN</span>
             </Link>
             <p className="mt-3 text-sm text-gray-400">

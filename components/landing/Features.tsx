@@ -1,30 +1,30 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { LockKeyhole, Zap, Globe, EyeOff } from "lucide-react";
+import { IconLock, IconBolt, IconWorld, IconEyeOff } from "@tabler/icons-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const features = [
   {
-    icon: LockKeyhole,
+    icon: IconLock,
     title: "256-битное шифрование",
     description:
       "Военное шифрование AES-256 защищает ваши данные от любых угроз. Даже профессиональные хакеры не смогут взломать ваше соединение.",
   },
   {
-    icon: Zap,
+    icon: IconBolt,
     title: "Молниеносная скорость",
     description:
       "Наши серверы оптимизированы для максимальной скорости. Стримьте 4K-видео, играйте в онлайн-игры без задержек.",
   },
   {
-    icon: Globe,
+    icon: IconWorld,
     title: "50+ серверов",
     description:
       "Серверы в 30+ странах мира. Обходите гео-ограничения и получайте доступ к любому контенту из любой точки мира.",
   },
   {
-    icon: EyeOff,
+    icon: IconEyeOff,
     title: "Без логов",
     description:
       "Мы не храним ваши данные и активность. Абсолютная приватность — наш главный приоритет и обещание каждому пользователю.",

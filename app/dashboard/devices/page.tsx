@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MonitorSmartphone, Trash2 } from "lucide-react";
+import { IconDeviceDesktop, IconTrash } from "@tabler/icons-react";
 
 const MAX_DEVICES = 7;
 
@@ -24,7 +24,7 @@ export default async function DevicesPage() {
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Устройства</h1>
         <Button disabled={isAtLimit}>
-          <MonitorSmartphone className="h-4 w-4 mr-2" />
+          <IconDeviceDesktop className="h-4 w-4 mr-2" />
           Добавить устройство
         </Button>
       </div>
@@ -36,7 +36,7 @@ export default async function DevicesPage() {
       {devices.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <MonitorSmartphone className="h-12 w-12 text-gray-500 mb-4" />
+            <IconDeviceDesktop className="h-12 w-12 text-gray-500 mb-4" />
             <p className="text-gray-400">Нет подключённых устройств</p>
           </CardContent>
         </Card>
@@ -48,7 +48,7 @@ export default async function DevicesPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="h-12 w-12 rounded-lg bg-card-hover flex items-center justify-center">
-                      <MonitorSmartphone className="h-6 w-6 text-accent-purple" />
+                      <IconDeviceDesktop className="h-6 w-6 text-accent-purple" />
                     </div>
                     <div>
                       <p className="font-medium">{device.name}</p>
@@ -67,7 +67,7 @@ export default async function DevicesPage() {
                       </span>
                     </div>
                     <Button variant="ghost" size="icon">
-                      <Trash2 className="h-4 w-4 text-gray-400 hover:text-red-500" />
+                      <IconTrash className="h-4 w-4 text-gray-400 hover:text-red-500" />
                     </Button>
                   </div>
                 </div>

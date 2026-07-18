@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ShieldCheck, LockKeyhole, Zap, Globe } from "lucide-react";
+import { IconShieldCheck, IconLock, IconBolt, IconWorld } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 
 const stats = [
-  { icon: LockKeyhole, value: "256-бит", label: "Шифрование" },
-  { icon: Zap, value: "10 Гбит/с", label: "Скорость" },
-  { icon: Globe, value: "50+", label: "Серверов" },
-  { icon: ShieldCheck, value: "0", label: "Логов" },
+  { icon: IconLock, value: "256-бит", label: "Шифрование" },
+  { icon: IconBolt, value: "10 Гбит/с", label: "Скорость" },
+  { icon: IconWorld, value: "50+", label: "Серверов" },
+  { icon: IconShieldCheck, value: "0", label: "Логов" },
 ];
 
 export function Hero() {
@@ -27,7 +27,7 @@ export function Hero() {
           transition={{ duration: 0.6 }}
           className="mx-auto mb-6"
         >
-          <ShieldCheck className="h-20 w-20 text-accent-cyan icon-glow animate-pulse-slow" />
+          <IconShieldCheck className="h-20 w-20 text-accent-cyan icon-glow animate-pulse-slow" />
         </motion.div>
 
         <h1 className="text-6xl font-bold md:text-8xl gradient-text">

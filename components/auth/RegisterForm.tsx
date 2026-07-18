@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Mail, Lock, Loader2 } from "lucide-react";
+import { IconMail, IconLock, IconRefresh } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -93,7 +93,7 @@ export function RegisterForm() {
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+              <IconMail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
               <Input
                 id="email"
                 type="email"
@@ -109,7 +109,7 @@ export function RegisterForm() {
           <div className="space-y-2">
             <Label htmlFor="password">Пароль</Label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+              <IconLock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
               <Input
                 id="password"
                 type="password"
@@ -125,7 +125,7 @@ export function RegisterForm() {
           <div className="space-y-2">
             <Label htmlFor="confirmPassword">Подтвердите пароль</Label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+              <IconLock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
               <Input
                 id="confirmPassword"
                 type="password"
@@ -161,7 +161,7 @@ export function RegisterForm() {
           </div>
 
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {loading && <IconRefresh className="mr-2 h-4 w-4 animate-spin" />}
             {loading ? "Регистрация..." : "Зарегистрироваться"}
           </Button>
         </form>

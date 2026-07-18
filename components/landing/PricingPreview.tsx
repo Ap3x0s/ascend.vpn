@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { IconCheck } from "@tabler/icons-react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -95,7 +95,7 @@ export function PricingPreview() {
                         key={feature}
                         className="flex items-center gap-2 text-sm"
                       >
-                        <Check className="h-4 w-4 text-accent-cyan flex-shrink-0" />
+                        <IconCheck className="h-4 w-4 text-accent-cyan flex-shrink-0" />
                         <span>{feature}</span>
                       </li>
                     ))}

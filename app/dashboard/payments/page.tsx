@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { CreditCard, CheckCircle, Clock, XCircle } from "lucide-react";
+import { IconCreditCard, IconCircleCheck, IconClock, IconCircleX } from "@tabler/icons-react";
 
 const PLAN_NAMES: Record<string, string> = {
   "30d": "30 дней",
@@ -12,10 +12,10 @@ const PLAN_NAMES: Record<string, string> = {
   "365d": "365 дней",
 };
 
-const STATUS_CONFIG: Record<string, { icon: typeof CheckCircle; color: string; label: string }> = {
-  completed: { icon: CheckCircle, color: "text-cyan-500", label: "Завершён" },
-  pending: { icon: Clock, color: "text-yellow-500", label: "Ожидание" },
-  failed: { icon: XCircle, color: "text-red-500", label: "Ошибка" },
+const STATUS_CONFIG: Record<string, { icon: typeof IconCircleCheck; color: string; label: string }> = {
+  completed: { icon: IconCircleCheck, color: "text-cyan-500", label: "Завершён" },
+  pending: { icon: IconClock, color: "text-yellow-500", label: "Ожидание" },
+  failed: { icon: IconCircleX, color: "text-red-500", label: "Ошибка" },
 };
 
 export default async function PaymentsPage() {
@@ -39,7 +39,7 @@ export default async function PaymentsPage() {
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-lg bg-accent-purple/20 flex items-center justify-center">
-                <CreditCard className="h-5 w-5 text-accent-purple" />
+                <IconCreditCard className="h-5 w-5 text-accent-purple" />
               </div>
               <div>
                 <p className="text-sm text-gray-400">Всего потрачено</p>
@@ -53,7 +53,7 @@ export default async function PaymentsPage() {
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-lg bg-green-500/20 flex items-center justify-center">
-                <CheckCircle className="h-5 w-5 text-green-500" />
+                <IconCircleCheck className="h-5 w-5 text-green-500" />
               </div>
               <div>
                 <p className="text-sm text-gray-400">Платежей</p>
@@ -67,7 +67,7 @@ export default async function PaymentsPage() {
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                <Clock className="h-5 w-5 text-blue-500" />
+                <IconClock className="h-5 w-5 text-blue-500" />
               </div>
               <div>
                 <p className="text-sm text-gray-400">Последний платёж</p>
@@ -85,7 +85,7 @@ export default async function PaymentsPage() {
       {payments.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <CreditCard className="h-12 w-12 text-gray-500 mb-4" />
+            <IconCreditCard className="h-12 w-12 text-gray-500 mb-4" />
             <p className="text-gray-400">Нет истории платежей</p>
           </CardContent>
         </Card>

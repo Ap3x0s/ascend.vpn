@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { IconShield, IconMenu2, IconX } from "@tabler/icons-react";
-import { Button } from "@/components/ui/button";
 
 const navLinks = [
   { href: "#features", label: "Преимущества" },
@@ -15,7 +14,7 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-[rgba(255,255,255,0.08)] bg-[rgba(8,9,13,0.7)] backdrop-blur-xl">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#0a0a12]/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
@@ -29,7 +28,7 @@ export function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="nav-link px-3 py-2 text-sm text-muted transition-colors hover:text-white"
+              className="nav-link px-4 py-2 text-sm text-muted"
             >
               {link.label}
             </a>
@@ -38,13 +37,17 @@ export function Navbar() {
 
         {/* Desktop auth */}
         <div className="hidden items-center gap-3 md:flex">
-          <Link href="/login">
-            <Button variant="ghost" size="sm">
-              Войти
-            </Button>
+          <Link
+            href="/login"
+            className="rounded-xl px-4 py-2 text-sm text-muted transition-colors hover:text-white"
+          >
+            Войти
           </Link>
-          <Link href="/register">
-            <Button size="sm">Регистрация</Button>
+          <Link
+            href="/register"
+            className="rounded-xl bg-gradient-to-r from-accent-purple to-accent-violet px-5 py-2 text-sm font-semibold text-white shadow-glow transition-all hover:scale-105"
+          >
+            Регистрация
           </Link>
         </div>
 
@@ -60,28 +63,32 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="border-t border-[rgba(255,255,255,0.08)] bg-[rgba(8,9,13,0.95)] backdrop-blur-xl md:hidden">
+        <div className="border-t border-white/5 bg-[#0a0a12]/95 backdrop-blur-xl md:hidden">
           <div className="flex flex-col gap-2 px-4 py-4">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="nav-link px-3 py-2 text-sm text-muted transition-colors hover:text-white"
+                className="nav-link px-4 py-2 text-sm text-muted"
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
               </a>
             ))}
-            <div className="flex flex-col gap-2 pt-3 border-t border-[rgba(255,255,255,0.08)]">
-              <Link href="/login" onClick={() => setMobileOpen(false)}>
-                <Button variant="ghost" size="sm" className="w-full">
-                  Войти
-                </Button>
+            <div className="flex flex-col gap-2 pt-3 mt-2 border-t border-white/5">
+              <Link
+                href="/login"
+                className="rounded-xl px-4 py-2.5 text-center text-sm text-muted transition-colors hover:text-white"
+                onClick={() => setMobileOpen(false)}
+              >
+                Войти
               </Link>
-              <Link href="/register" onClick={() => setMobileOpen(false)}>
-                <Button size="sm" className="w-full">
-                  Регистрация
-                </Button>
+              <Link
+                href="/register"
+                className="rounded-xl bg-gradient-to-r from-accent-purple to-accent-violet px-4 py-2.5 text-center text-sm font-semibold text-white"
+                onClick={() => setMobileOpen(false)}
+              >
+                Регистрация
               </Link>
             </div>
           </div>

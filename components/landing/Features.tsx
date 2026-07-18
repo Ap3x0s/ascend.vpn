@@ -60,11 +60,13 @@ export function Features() {
               transition={{ duration: 0.5, delay: i * 0.1 }}
             >
               <div className="glass interactive h-full p-6">
-                <feature.icon className="h-12 w-12 text-accent-cyan mb-4 icon-glow" />
-                <h3 className="text-xl font-semibold mb-2">
+                <div className="mb-4 inline-flex rounded-xl bg-accent-purple/10 p-3">
+                  <feature.icon className="h-8 w-8 text-accent-purple" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2 text-white">
                   {feature.title}
                 </h3>
-                <p className="text-muted text-sm">{feature.description}</p>
+                <p className="text-muted text-sm leading-relaxed">{feature.description}</p>
               </div>
             </motion.div>
           ))}

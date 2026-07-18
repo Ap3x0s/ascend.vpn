@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { IconShieldCheck, IconLock, IconBolt, IconWorld } from "@tabler/icons-react";
-import { Button } from "@/components/ui/button";
 
 const stats = [
   { icon: IconLock, value: "256-бит", label: "Шифрование" },
@@ -38,7 +37,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-4 text-2xl text-gray-300 md:text-3xl"
+          className="mt-4 text-2xl md:text-3xl text-white/90"
         >
           Безопасность. Скорость. Свобода.
         </motion.p>
@@ -47,7 +46,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mx-auto mt-6 max-w-2xl text-lg text-gray-400"
+          className="mx-auto mt-6 max-w-2xl text-lg text-muted"
         >
           Защитите свои данные с VPN нового поколения. Военное шифрование,
           молниеносная скорость и абсолютная приватность.
@@ -59,8 +58,11 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.6 }}
           className="mt-10"
         >
-          <Link href="/register">
-            <Button size="xl">Начать сейчас</Button>
+          <Link
+            href="/register"
+            className="inline-flex h-14 items-center justify-center rounded-xl bg-gradient-to-r from-accent-purple to-accent-cyan px-10 text-lg font-semibold text-white shadow-glow transition-all hover:scale-105 hover:shadow-glow"
+          >
+            Начать сейчас
           </Link>
         </motion.div>
       </motion.div>
@@ -75,11 +77,11 @@ export function Hero() {
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="flex flex-col items-center rounded-xl border border-border bg-card/50 p-6 transition-colors hover:border-accent-purple/50"
+            className="glass flex flex-col items-center p-6 transition-all hover:border-accent-purple/30 hover:shadow-glow"
           >
             <stat.icon className="mb-3 h-8 w-8 text-accent-cyan" />
             <span className="text-2xl font-bold text-white">{stat.value}</span>
-            <span className="mt-1 text-sm text-gray-400">{stat.label}</span>
+            <span className="mt-1 text-sm text-muted">{stat.label}</span>
           </div>
         ))}
       </motion.div>

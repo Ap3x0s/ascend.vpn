@@ -8,7 +8,7 @@ const faqItems = [
   {
     question: "Что такое VPN?",
     answer:
-      "VPN (Virtual Private Network) — это технология, которая создаёт зашифрованное соединение между вашим устройством и интернетом. Он скрывает ваш реальный IP-адрес, шифрует весь интернет-трафик и защищает ваши данные от перехвата. Благодаря VPN вы можете безопасно пользоваться любой сетью, включая публичный Wi-Fi.",
+      "VPN (Virtual Private Network) — это технология, которая создаёт зашифрованное соединение между вашим устройством и интернетом. Он скрывает ваш реальный IP-адрес, шифрует весь интернет-трафик и защищает ваши данные от перехвата.",
   },
   {
     question: "Как подключиться к VPN?",
@@ -18,17 +18,17 @@ const faqItems = [
   {
     question: "Какие устройства поддерживаются?",
     answer:
-      "ASCEND.VPN доступен на всех популярных платформах: Windows, macOS, Linux, iOS, Android. Также мы поддерживаем подключение через роутеры, что позволяет защитить все устройства в вашей домашней сети одновременно.",
+      "ASCEND.VPN доступен на всех популярных платформах: Windows, macOS, Linux, iOS, Android. Также мы поддерживаем подключение через роутеры.",
   },
   {
     question: "Можно ли использовать на нескольких устройствах?",
     answer:
-      "Да! Количество подключённых устройств зависит от выбранного плана: от 3 до 10 устройств одновременно. Вы можете подключить компьютер, телефон, планшет и даже роутер — всё будет работать стабильно.",
+      "Да! Количество подключённых устройств зависит от выбранного плана: от 3 до 10 устройств одновременно.",
   },
   {
     question: "Ваши данные в безопасности?",
     answer:
-      "Абсолютно. Мы используем 256-битное AES-шифрование — тот же стандарт, который применяют военные и банковские системы. Кроме того, мы придерживаемся строгой политики отсутствия логов: мы не храним и не отслеживаем вашу онлайн-активность.",
+      "Абсолютно. Мы используем 256-битное AES-шифрование — тот же стандарт, который применяют военные и банковские системы. Мы придерживаемся строгой политики отсутствия логов.",
   },
 ];
 
@@ -61,18 +61,20 @@ export function FAQ() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="glass overflow-hidden"
+              className={`glass overflow-hidden transition-all ${
+                openIndex === index ? "border-accent-purple/30" : ""
+              }`}
             >
               <button
                 onClick={() =>
                   setOpenIndex(openIndex === index ? null : index)
                 }
-                className="w-full flex items-center justify-between p-5 text-left hover:bg-[rgba(255,255,255,0.04)] transition-colors"
+                className="w-full flex items-center justify-between p-5 text-left hover:bg-white/[0.02] transition-colors"
               >
-                <span className="font-medium">{item.question}</span>
+                <span className="font-medium text-white">{item.question}</span>
                 <IconChevronDown
                   className={`h-5 w-5 text-dim flex-shrink-0 transition-transform duration-300 ${
-                    openIndex === index ? "rotate-180" : ""
+                    openIndex === index ? "rotate-180 text-accent-purple" : ""
                   }`}
                 />
               </button>

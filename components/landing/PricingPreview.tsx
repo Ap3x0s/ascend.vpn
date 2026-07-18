@@ -7,7 +7,7 @@ import Link from "next/link";
 const plans = [
   {
     name: "30 дней",
-    price: "299₽",
+    price: "299",
     perDay: "~10₽/день",
     devices: "3 устройства",
     features: ["Все серверы", "24/7 поддержка"],
@@ -15,7 +15,7 @@ const plans = [
   },
   {
     name: "90 дней",
-    price: "799₽",
+    price: "799",
     perDay: "~8.9₽/день",
     devices: "5 устройств",
     features: ["Все серверы", "24/7 поддержка"],
@@ -23,7 +23,7 @@ const plans = [
   },
   {
     name: "180 дней",
-    price: "1 499₽",
+    price: "1 499",
     perDay: "~8.3₽/день",
     devices: "7 устройств",
     features: ["Все серверы", "24/7 поддержка", "Приоритет"],
@@ -31,7 +31,7 @@ const plans = [
   },
   {
     name: "365 дней",
-    price: "2 499₽",
+    price: "2 499",
     perDay: "~6.8₽/день",
     devices: "10 устройств",
     features: ["Все серверы", "24/7 поддержка", "Приоритет", "Exclusive"],
@@ -73,16 +73,16 @@ export function PricingPreview() {
                 }`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#a5b4fc] to-[#c4b5fd] px-3 py-1 text-xs font-semibold text-[#08090d]">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-accent-purple to-accent-cyan px-4 py-1 text-xs font-bold text-white shadow-glow">
                     Популярный
                   </div>
                 )}
 
-                <h3 className="text-lg font-semibold mb-4">{plan.name}</h3>
+                <h3 className="text-lg font-semibold mb-3 text-white">{plan.name}</h3>
 
                 <div className="mb-4">
                   <span className="text-4xl font-bold gradient-text">
-                    {plan.price}
+                    {plan.price}₽
                   </span>
                   <p className="text-dim text-sm mt-1">{plan.perDay}</p>
                 </div>
@@ -105,10 +105,10 @@ export function PricingPreview() {
 
                 <Link
                   href="/register"
-                  className={`block w-full py-2.5 rounded-xl text-center text-sm font-semibold transition-all ${
+                  className={`block w-full py-3 rounded-xl text-center text-sm font-semibold transition-all ${
                     plan.popular
-                      ? "bg-gradient-to-r from-[#a5b4fc] to-[#c4b5fd] text-[#08090d] hover:shadow-glow"
-                      : "glass hover:bg-[rgba(255,255,255,0.1)]"
+                      ? "bg-gradient-to-r from-accent-purple to-accent-cyan text-white shadow-glow hover:scale-105"
+                      : "bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:border-accent-purple/30"
                   }`}
                 >
                   Выбрать

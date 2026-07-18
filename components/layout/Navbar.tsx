@@ -14,7 +14,7 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#0a0a12]/80 backdrop-blur-xl">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#08080f]/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
@@ -45,7 +45,7 @@ export function Navbar() {
           </Link>
           <Link
             href="/register"
-            className="rounded-xl bg-gradient-to-r from-accent-purple to-accent-violet px-5 py-2 text-sm font-semibold text-white shadow-glow transition-all hover:scale-105"
+            className="rounded-xl bg-gradient-to-r from-accent-purple to-accent-violet px-5 py-2 text-sm font-semibold text-[#08080f] shadow-glow-sm transition-all hover:scale-105"
           >
             Регистрация
           </Link>
@@ -63,7 +63,7 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="border-t border-white/5 bg-[#0a0a12]/95 backdrop-blur-xl md:hidden">
+        <div className="border-t border-white/5 bg-[#08080f]/95 backdrop-blur-xl md:hidden">
           <div className="flex flex-col gap-2 px-4 py-4">
             {navLinks.map((link) => (
               <a
@@ -85,7 +85,7 @@ export function Navbar() {
               </Link>
               <Link
                 href="/register"
-                className="rounded-xl bg-gradient-to-r from-accent-purple to-accent-violet px-4 py-2.5 text-center text-sm font-semibold text-white"
+                className="rounded-xl bg-gradient-to-r from-accent-purple to-accent-violet px-4 py-2.5 text-center text-sm font-semibold text-[#08080f]"
                 onClick={() => setMobileOpen(false)}
               >
                 Регистрация

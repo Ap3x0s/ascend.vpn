@@ -18,6 +18,10 @@ prisma/dev.db-journal
 *.tsbuildinfo
 next-env.d.ts
 
+# superpowers (internal)
+.superpowers/
+
 # os
 .DS_Store
 *.pem
+Thumbs.db

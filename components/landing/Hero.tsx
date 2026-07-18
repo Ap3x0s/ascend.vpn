@@ -37,7 +37,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-4 text-2xl md:text-3xl text-white/90"
+          className="mt-4 text-2xl md:text-3xl text-white"
         >
           Безопасность. Скорость. Свобода.
         </motion.p>
@@ -77,7 +77,7 @@ export function Hero() {
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="glass flex flex-col items-center p-6 transition-all hover:border-accent-purple/30 hover:shadow-glow-sm"
+            className="glass flex flex-col items-center p-6 transition-all hover:border-accent-purple/40 hover:shadow-glow-sm"
           >
             <stat.icon className="mb-3 h-8 w-8 text-accent-purple" />
             <span className="text-2xl font-bold text-white">{stat.value}</span>

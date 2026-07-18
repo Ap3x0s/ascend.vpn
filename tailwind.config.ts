@@ -10,22 +10,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#0a0a14",
-        card: "#111120",
-        "card-hover": "#1a1a2e",
+        background: "#08080f",
+        card: "#0f0f1c",
+        "card-hover": "#161628",
         accent: {
-          purple: "#a78bfa",
-          violet: "#8b5cf6",
-          blue: "#60a5fa",
-          cyan: "#93c5fd",  // заменил зелёный на голубой
+          purple: "#c084fc",
+          violet: "#a855f7",
+          blue: "#818cf8",
         },
-        border: "#1e1e35",
-        muted: "#b0b0c8",
-        dim: "#6b6b85",
+        border: "#1a1a30",
+        muted: "#c4c4d8",
+        dim: "#7a7a95",
       },
       boxShadow: {
-        glow: "0 8px 32px rgba(139, 92, 246, 0.3)",
-        "glow-sm": "0 4px 16px rgba(139, 92, 246, 0.2)",
+        glow: "0 8px 32px rgba(168, 85, 247, 0.35)",
+        "glow-sm": "0 4px 16px rgba(168, 85, 247, 0.25)",
       },
     },
   },

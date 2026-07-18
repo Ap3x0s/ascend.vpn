@@ -11,29 +11,30 @@ body {
   color: #f0f0f8;
   font-family: "Inter", system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* Animated aurora background with 3 moving blobs */
+/* Aurora background - fixed, behind everything */
 .aurora-bg {
   position: fixed;
   inset: 0;
-  z-index: 0;
-  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
   background: #08080f;
 }
 
 .aurora-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.5;
+  filter: blur(100px);
+  opacity: 0.4;
   animation: float 20s ease-in-out infinite;
 }
 
 .aurora-blob:nth-child(1) {
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.6), transparent 70%);
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.5), transparent 70%);
   top: -10%;
   left: 10%;
   animation-duration: 18s;
@@ -42,7 +43,7 @@ body {
 .aurora-blob:nth-child(2) {
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.5), transparent 70%);
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.4), transparent 70%);
   top: 30%;
   right: 5%;
   animation-duration: 22s;
@@ -52,7 +53,7 @@ body {
 .aurora-blob:nth-child(3) {
   width: 450px;
   height: 450px;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.45), transparent 70%);
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.35), transparent 70%);
   bottom: -5%;
   left: 35%;
   animation-duration: 25s;
@@ -82,11 +83,13 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* Glass card */
+/* Glass card - ensure it's above background */
 .glass {
-  background: rgba(12, 12, 22, 0.85);
+  background: rgba(12, 12, 22, 0.9);
   border: 1px solid rgba(139, 92, 246, 0.1);
   border-radius: 16px;
+  position: relative;
+  z-index: 1;
 }
 
 .glass.interactive {
@@ -95,7 +98,7 @@ body {
 }
 
 .glass.interactive:hover {
-  background: rgba(18, 18, 32, 0.9);
+  background: rgba(18, 18, 32, 0.95);
   border-color: rgba(139, 92, 246, 0.25);
   box-shadow: 0 8px 32px rgba(139, 92, 246, 0.15);
   transform: translateY(-2px);
@@ -131,6 +134,12 @@ body {
 .nav-link:hover {
   color: #f0f0f8;
   background: rgba(255, 255, 255, 0.04);
+}
+
+/* Ensure all sections are above background */
+section {
+  position: relative;
+  z-index: 1;
 }
 
 /* Scrollbar */

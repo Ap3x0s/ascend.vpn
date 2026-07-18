@@ -13,7 +13,7 @@ const stats = [
 
 export function Hero() {
   return (
-    <section className="relative flex min-h-screen flex-col items-center justify-center px-4 pt-20 z-10">
+    <section className="relative flex min-h-screen flex-col items-center justify-center px-4 pt-20">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

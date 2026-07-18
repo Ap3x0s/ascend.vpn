@@ -30,8 +30,8 @@ const tripledServices = [...services, ...services, ...services];
 
 export function BlockedServices() {
   return (
-    <section className="py-16 px-4 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-16 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -48,13 +48,9 @@ export function BlockedServices() {
         </motion.div>
       </div>
 
-      {/* Infinite scrolling marquee - scrolls right */}
+      {/* Infinite scrolling marquee - scrolls LEFT */}
       <div className="relative py-4">
-        {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-40 bg-gradient-to-r from-[#08080f] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-[#08080f] to-transparent z-10 pointer-events-none" />
-
-        <div className="flex animate-marquee-right">
+        <div className="flex animate-marquee-left">
           {tripledServices.map((service, i) => (
             <div
               key={`${service.name}-${i}`}
@@ -78,7 +74,7 @@ export function BlockedServices() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: 0.3 }}
-        className="text-center text-dim text-xs mt-6 max-w-7xl mx-auto"
+        className="text-center text-dim text-xs mt-6 px-4"
       >
         И многие другие сервисы доступны через ASCEND.VPN
       </motion.p>

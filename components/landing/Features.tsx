@@ -1,12 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Lock, Zap, Globe, EyeOff } from "lucide-react";
+import { LockKeyhole, Zap, Globe, EyeOff } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const features = [
   {
-    icon: Lock,
+    icon: LockKeyhole,
     title: "256-битное шифрование",
     description:
       "Военное шифрование AES-256 защищает ваши данные от любых угроз. Даже профессиональные хакеры не смогут взломать ваше соединение.",

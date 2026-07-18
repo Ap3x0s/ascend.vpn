@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Shield, Lock, Zap, Globe } from "lucide-react";
+import { ShieldCheck, LockKeyhole, Zap, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const stats = [
-  { icon: Lock, value: "256-бит", label: "Шифрование" },
+  { icon: LockKeyhole, value: "256-бит", label: "Шифрование" },
   { icon: Zap, value: "10 Гбит/с", label: "Скорость" },
   { icon: Globe, value: "50+", label: "Серверов" },
-  { icon: Shield, value: "0", label: "Логов" },
+  { icon: ShieldCheck, value: "0", label: "Логов" },
 ];
 
 export function Hero() {
@@ -21,7 +21,14 @@ export function Hero() {
         transition={{ duration: 0.6 }}
         className="text-center"
       >
-        <Shield className="mx-auto mb-6 h-16 w-16 text-accent-purple" />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="mx-auto mb-6"
+        >
+          <ShieldCheck className="h-20 w-20 text-accent-cyan icon-glow animate-pulse-slow" />
+        </motion.div>
 
         <h1 className="text-6xl font-bold md:text-8xl gradient-text">
           ASCEND.VPN

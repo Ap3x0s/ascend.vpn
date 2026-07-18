@@ -85,6 +85,21 @@ body {
   color: white;
 }
 
+/* Icon glow */
+.icon-glow {
+  filter: drop-shadow(0 0 8px var(--accent-cyan));
+}
+
+/* Slow pulse animation for hero icon */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
 /* Aurora background */
 .aurora-bg {
   position: fixed;

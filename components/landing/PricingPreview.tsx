@@ -2,43 +2,46 @@
 
 import { motion } from "framer-motion";
 import { IconCheck } from "@tabler/icons-react";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const plans = [
   {
+    name: "30 дней",
+    price: "299₽",
+    perDay: "~10₽/день",
+    devices: "3 устройства",
+    features: ["Все серверы", "24/7 поддержка"],
+    popular: false,
+  },
+  {
     name: "90 дней",
     price: "799₽",
-    daily: "~8.9₽/день",
-    features: ["5 устройств", "Все серверы", "24/7 поддержка"],
+    perDay: "~8.9₽/день",
+    devices: "5 устройств",
+    features: ["Все серверы", "24/7 поддержка"],
     popular: false,
   },
   {
     name: "180 дней",
     price: "1 499₽",
-    daily: "~8.3₽/день",
-    features: ["7 устройств", "Все серверы", "24/7 поддержка", "Приоритет"],
+    perDay: "~8.3₽/день",
+    devices: "7 устройств",
+    features: ["Все серверы", "24/7 поддержка", "Приоритет"],
     popular: true,
   },
   {
     name: "365 дней",
     price: "2 499₽",
-    daily: "~6.8₽/день",
-    features: [
-      "10 устройств",
-      "Все серверы",
-      "24/7 поддержка",
-      "Приоритет",
-      "Exclusive серверы",
-    ],
+    perDay: "~6.8₽/день",
+    devices: "10 устройств",
+    features: ["Все серверы", "24/7 поддержка", "Приоритет", "Exclusive"],
     popular: false,
   },
 ];
 
 export function PricingPreview() {
   return (
-    <section id="pricing" className="py-20 px-4 bg-card/30 scroll-mt-20">
+    <section id="pricing" className="py-20 px-4 scroll-mt-20">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -50,83 +53,70 @@ export function PricingPreview() {
           <h2 className="text-4xl font-bold mb-4">
             Выберите свой <span className="gradient-text">план</span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <p className="text-muted max-w-2xl mx-auto">
             Чем дольше подписка, тем больше экономия
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto">
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="relative"
             >
-              {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                  <span className="bg-accent-purple text-white text-xs font-semibold px-4 py-1 rounded-full">
-                    Популярный
-                  </span>
-                </div>
-              )}
-              <Card
-                className={`h-full border-border/50 bg-card/50 ${
-                  plan.popular ? "glow-border" : ""
+              <div
+                className={`glass relative flex flex-col h-full p-6 ${
+                  plan.popular ? "glow-border" : "interactive"
                 }`}
               >
-                <CardHeader className="text-center">
-                  <h3 className="text-xl font-semibold text-gray-400">
-                    {plan.name}
-                  </h3>
-                  <div className="mt-4">
-                    <span className="text-4xl font-bold gradient-text">
-                      {plan.price}
-                    </span>
-                    <p className="text-sm text-gray-400 mt-2">{plan.daily}</p>
+                {plan.popular && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#a5b4fc] to-[#c4b5fd] px-3 py-1 text-xs font-semibold text-[#08090d]">
+                    Популярный
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3 mb-6">
-                    {plan.features.map((feature) => (
-                      <li
-                        key={feature}
-                        className="flex items-center gap-2 text-sm"
-                      >
-                        <IconCheck className="h-4 w-4 text-accent-cyan flex-shrink-0" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Button
-                    variant={plan.popular ? "default" : "outline"}
-                    className="w-full"
-                    asChild
-                  >
-                    <Link href="/register">Выбрать</Link>
-                  </Button>
-                </CardContent>
-              </Card>
+                )}
+
+                <h3 className="text-lg font-semibold mb-4">{plan.name}</h3>
+
+                <div className="mb-4">
+                  <span className="text-4xl font-bold gradient-text">
+                    {plan.price}
+                  </span>
+                  <p className="text-dim text-sm mt-1">{plan.perDay}</p>
+                </div>
+
+                <p className="text-sm text-accent-cyan font-medium mb-5">
+                  {plan.devices}
+                </p>
+
+                <ul className="space-y-2.5 mb-6 flex-1">
+                  {plan.features.map((feature) => (
+                    <li
+                      key={feature}
+                      className="flex items-center gap-2 text-sm text-muted"
+                    >
+                      <IconCheck className="h-4 w-4 text-accent-purple shrink-0" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Link
+                  href="/register"
+                  className={`block w-full py-2.5 rounded-xl text-center text-sm font-semibold transition-all ${
+                    plan.popular
+                      ? "bg-gradient-to-r from-[#a5b4fc] to-[#c4b5fd] text-[#08090d] hover:shadow-glow"
+                      : "glass hover:bg-[rgba(255,255,255,0.1)]"
+                  }`}
+                >
+                  Выбрать
+                </Link>
+              </div>
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-center mt-12"
-        >
-          <Link
-            href="/pricing"
-            className="text-accent-cyan hover:underline text-lg"
-          >
-            Смотреть все тарифы →
-          </Link>
-        </motion.div>
       </div>
     </section>
   );

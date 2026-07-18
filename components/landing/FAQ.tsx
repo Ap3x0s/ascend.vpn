@@ -48,12 +48,12 @@ export function FAQ() {
           <h2 className="text-4xl font-bold mb-4">
             Частые <span className="gradient-text">вопросы</span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <p className="text-muted max-w-2xl mx-auto">
             Не нашли ответ? Свяжитесь с нашей поддержкой, и мы поможем.
           </p>
         </motion.div>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           {faqItems.map((item, index) => (
             <motion.div
               key={item.question}
@@ -61,17 +61,17 @@ export function FAQ() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="border border-border rounded-xl overflow-hidden"
+              className="glass overflow-hidden"
             >
               <button
                 onClick={() =>
                   setOpenIndex(openIndex === index ? null : index)
                 }
-                className="w-full flex items-center justify-between p-5 text-left hover:bg-card/50 transition-colors"
+                className="w-full flex items-center justify-between p-5 text-left hover:bg-[rgba(255,255,255,0.04)] transition-colors"
               >
                 <span className="font-medium">{item.question}</span>
                 <IconChevronDown
-                  className={`h-5 w-5 text-gray-400 flex-shrink-0 transition-transform duration-300 ${
+                  className={`h-5 w-5 text-dim flex-shrink-0 transition-transform duration-300 ${
                     openIndex === index ? "rotate-180" : ""
                   }`}
                 />
@@ -85,7 +85,7 @@ export function FAQ() {
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
-                    <p className="px-5 pb-5 pt-0 text-gray-400 text-sm">
+                    <p className="px-5 pb-5 pt-0 text-muted text-sm leading-relaxed">
                       {item.answer}
                     </p>
                   </motion.div>

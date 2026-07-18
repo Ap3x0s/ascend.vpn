@@ -1,32 +1,44 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { IconLock, IconBolt, IconWorld, IconEyeOff } from "@tabler/icons-react";
+import { IconLock, IconBolt, IconWorld, IconEyeOff, IconHeadset, IconDiscount } from "@tabler/icons-react";
 
 const features = [
   {
     icon: IconLock,
     title: "256-битное шифрование",
     description:
-      "Военное шифрование AES-256 защищает ваши данные от любых угроз.",
+      "Военное шифрование AES-256 защищает ваши данные от хакеров, перехвата и слежки. Ваш трафик полностью зашифрован.",
   },
   {
     icon: IconBolt,
     title: "Молниеносная скорость",
     description:
-      "Наши серверы оптимизированы для максимальной скорости без задержек.",
+      "Серверы с пропускной способностью 10 Гбит/с. Стримьте 4K, играйте онлайн без задержек и пинга.",
   },
   {
     icon: IconWorld,
     title: "50+ серверов",
     description:
-      "Серверы в 30+ странах мира для обхода гео-ограничений.",
+      "Серверы в 30+ странах мира. Обходите блокировки, получайте доступ к Netflix, YouTube, Telegram из любой точки.",
   },
   {
     icon: IconEyeOff,
-    title: "Без логов",
+    title: "Политика без логов",
     description:
-      "Абсолютная приватность — мы не храним вашу активность.",
+      "Мы не храним, не собираем и не передаём данные о вашей активности. Абсолютная приватность гарантирована.",
+  },
+  {
+    icon: IconHeadset,
+    title: "Поддержка 24/7",
+    description:
+      "Наша команда готова помочь в любое время суток. Быстрые ответы и решение проблем за минуты.",
+  },
+  {
+    icon: IconDiscount,
+    title: "Выгодные тарифы",
+    description:
+      "От 299₽ в месяц. Чем дольше подписка — тем больше экономия. Никаких скрытых платежей.",
   },
 ];
 
@@ -45,11 +57,12 @@ export function Features() {
             Почему <span className="gradient-text">ASCEND.VPN</span>?
           </h2>
           <p className="text-muted max-w-2xl mx-auto">
-            Передовые технологии безопасности и максимальная производительность.
+            Мы предоставляем лучший VPN-сервис с передовыми технологиями
+            безопасности и максимальной скоростью для ваших устройств.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {features.map((feature, i) => (
             <motion.div
               key={feature.title}

@@ -5,6 +5,12 @@ import Link from "next/link";
 import { Shield, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+const navLinks = [
+  { href: "#features", label: "Преимущества" },
+  { href: "#pricing", label: "Тарифы" },
+  { href: "#faq", label: "Вопросы" },
+];
+
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -19,18 +25,15 @@ export function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-6 md:flex">
-          <Link
-            href="/pricing"
-            className="text-sm text-gray-400 transition-colors hover:text-white"
-          >
-            Тарифы
-          </Link>
-          <Link
-            href="/#faq"
-            className="text-sm text-gray-400 transition-colors hover:text-white"
-          >
-            FAQ
-          </Link>
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-sm text-gray-400 transition-colors hover:text-white"
+            >
+              {link.label}
+            </a>
+          ))}
         </div>
 
         {/* Desktop auth */}
@@ -59,20 +62,16 @@ export function Navbar() {
       {mobileOpen && (
         <div className="border-t border-border bg-background/95 backdrop-blur-xl md:hidden">
           <div className="flex flex-col gap-4 px-4 py-6">
-            <Link
-              href="/pricing"
-              className="text-sm text-gray-400 transition-colors hover:text-white"
-              onClick={() => setMobileOpen(false)}
-            >
-              Тарифы
-            </Link>
-            <Link
-              href="/#faq"
-              className="text-sm text-gray-400 transition-colors hover:text-white"
-              onClick={() => setMobileOpen(false)}
-            >
-              FAQ
-            </Link>
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-sm text-gray-400 transition-colors hover:text-white"
+                onClick={() => setMobileOpen(false)}
+              >
+                {link.label}
+              </a>
+            ))}
             <div className="flex flex-col gap-2 pt-2">
               <Link href="/login" onClick={() => setMobileOpen(false)}>
                 <Button variant="ghost" size="sm" className="w-full">

@@ -125,6 +125,24 @@ body {
   animation: pulse-slow 4s ease-in-out infinite;
 }
 
+/* Marquee animation for services */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
 /* Nav */
 .nav-link {
   border-radius: 8px;

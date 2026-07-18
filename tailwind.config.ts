@@ -10,12 +10,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#0a0a0f",
-        card: "#1a1a2e",
-        "card-hover": "#25253e",
-        "accent-purple": "#6c5ce7",
-        "accent-cyan": "#00cec9",
-        border: "#2a2a3e",
+        background: "#0a1628",
+        card: "#0f2035",
+        "card-hover": "#162d4a",
+        "accent-purple": "#0ea5e9",
+        "accent-cyan": "#06b6d4",
+        "accent-teal": "#14b8a6",
+        border: "#1e3a5f",
       },
     },
   },

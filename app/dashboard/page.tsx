@@ -48,6 +48,7 @@ export default async function DashboardPage() {
           activeSubscription
             ? {
                 plan: activeSubscription.plan,
+                startDate: activeSubscription.startDate,
                 endDate: activeSubscription.endDate,
                 status: activeSubscription.status,
               }

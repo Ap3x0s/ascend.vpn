@@ -13,6 +13,7 @@ const PLAN_NAMES: Record<string, string> = {
 interface StatsOverviewProps {
   subscription: {
     plan: string;
+    startDate: Date;
     endDate: Date;
     status: string | null;
   } | null;

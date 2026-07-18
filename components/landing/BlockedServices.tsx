@@ -50,6 +50,10 @@ export function BlockedServices() {
 
       {/* Infinite scrolling marquee - scrolls LEFT */}
       <div className="relative py-4">
+        {/* Soft fade edges */}
+        <div className="absolute left-0 top-0 bottom-0 w-48 bg-gradient-to-r from-[#08080f] via-[#08080f]/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-48 bg-gradient-to-l from-[#08080f] via-[#08080f]/80 to-transparent z-10 pointer-events-none" />
+
         <div className="flex animate-marquee-left">
           {tripledServices.map((service, i) => (
             <div

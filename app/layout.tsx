@@ -9,9 +9,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "ASCEND.VPN - Premium VPN Service",
+  title: "ASCEND.VPN — Безопасный VPN-сервис",
   description:
-    "Secure, fast, and private VPN service with military-grade encryption",
+    "Быстрый и безопасный VPN-сервис с военным шифрованием. Доступ к заблокированным сервисам.",
 };
 
 export default function RootLayout({
@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="ru" className="dark">
       <body className={inter.className}>
         <Providers>{children}</Providers>
       </body>

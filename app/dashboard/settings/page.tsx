@@ -32,7 +32,7 @@ export default function SettingsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Текущий пароль</label>
+              <label className="text-sm font-medium text-muted">Текущий пароль</label>
               <Input
                 type="password"
                 placeholder="Введите текущий пароль"
@@ -41,7 +41,7 @@ export default function SettingsPage() {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Новый пароль</label>
+              <label className="text-sm font-medium text-muted">Новый пароль</label>
               <Input
                 type="password"
                 placeholder="Введите новый пароль"
@@ -50,7 +50,7 @@ export default function SettingsPage() {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Подтвердите пароль</label>
+              <label className="text-sm font-medium text-muted">Подтвердите пароль</label>
               <Input
                 type="password"
                 placeholder="Повторите новый пароль"
@@ -75,7 +75,7 @@ export default function SettingsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="bg-background border border-border rounded-lg p-4">
-              <code className="text-sm text-gray-300 break-all">
+              <code className="text-sm text-muted break-all">
                 asc_vpn_xxxxxxxxxxxxxxxxxxxx
               </code>
             </div>

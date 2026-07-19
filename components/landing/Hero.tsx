@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 import { IconShieldCheck, IconLock, IconBolt, IconWorld } from "@tabler/icons-react";
 
 const stats = [
-  { icon: IconLock, value: "256-бит", label: "Шифрование" },
+  { icon: IconLock, value: "AES-256", label: "Шифрование" },
   { icon: IconBolt, value: "10 Гбит/с", label: "Скорость" },
-  { icon: IconWorld, value: "50+", label: "Серверов" },
-  { icon: IconShieldCheck, value: "0", label: "Логов" },
+  { icon: IconWorld, value: "6", label: "Серверов" },
+  { icon: IconShieldCheck, value: "4", label: "Страны" },
 ];
 
 export function Hero() {

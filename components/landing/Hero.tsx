@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
-import { IconShieldCheck, IconLock, IconBolt, IconWorld, IconDashboard } from "@tabler/icons-react";
+import { IconShieldCheck, IconLock, IconBolt, IconWorld, IconHome } from "@tabler/icons-react";
 
 const stats = [
   { icon: IconLock, value: "AES-256", label: "Шифрование" },
@@ -66,7 +66,7 @@ export function Hero() {
               href="/dashboard"
               className="inline-flex h-14 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-accent-purple to-accent-violet px-10 text-lg font-semibold text-[#08080f] shadow-glow transition-all hover:scale-105"
             >
-              <IconDashboard className="w-5 h-5" />
+              <IconHome className="w-5 h-5" />
               Перейти в кабинет
             </Link>
           ) : (

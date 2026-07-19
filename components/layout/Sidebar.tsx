@@ -10,11 +10,13 @@ import {
   IconCreditCard,
   IconSettings,
   IconLogout,
+  IconWorld,
 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/dashboard", label: "Обзор", icon: IconLayoutDashboard },
+  { href: "/dashboard/locations", label: "Локации", icon: IconWorld },
   { href: "/dashboard/devices", label: "Устройства", icon: IconDeviceMobile },
   { href: "/dashboard/payments", label: "История оплат", icon: IconCreditCard },
   { href: "/dashboard/settings", label: "Настройки", icon: IconSettings },

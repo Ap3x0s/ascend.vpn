@@ -13,8 +13,8 @@ export function Footer() {
               <span className="text-lg font-bold gradient-text">ASCEND.VPN</span>
             </Link>
             <p className="mt-3 text-sm text-muted">
-              Безопасный и быстрый VPN-сервис с военным шифрованием для вашей
-              конфиденциальности.
+              Безопасный и быстрый VPN-сервис для защиты вашей
+              конфиденциальности в интернете.
             </p>
           </div>
 
@@ -54,13 +54,13 @@ export function Footer() {
             <h4 className="text-sm font-semibold text-white">Правовая информация</h4>
             <ul className="mt-3 space-y-2 text-sm text-muted">
               <li>
-                <Link href="/privacy" className="transition-colors hover:text-white">
+                <Link href="/legal/policy" className="transition-colors hover:text-white">
                   Политика конфиденциальности
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="transition-colors hover:text-white">
-                  Условия использования
+                <Link href="/legal/terms" className="transition-colors hover:text-white">
+                  Пользовательское соглашение
                 </Link>
               </li>
             </ul>

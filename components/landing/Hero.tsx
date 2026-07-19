@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
-import { IconShieldCheck, IconLock, IconBolt, IconWorld } from "@tabler/icons-react";
+import { IconShieldCheck, IconLock, IconBolt, IconWorld, IconDashboard } from "@tabler/icons-react";
 
 const stats = [
   { icon: IconLock, value: "AES-256", label: "Шифрование" },
@@ -12,6 +13,8 @@ const stats = [
 ];
 
 export function Hero() {
+  const { data: session } = useSession();
+
   return (
     <section className="relative flex min-h-screen flex-col items-center justify-center px-4 pt-20">
       <motion.div
@@ -48,8 +51,8 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mx-auto mt-6 max-w-2xl text-lg text-muted"
         >
-          Защитите свои данные с VPN нового поколения. Военное шифрование,
-          молниеносная скорость и абсолютная приватность.
+          Защитите свои данные с VPN нового поколения. Надёжное шифрование,
+          высокая скорость и простота использования.
         </motion.p>
 
         <motion.div
@@ -58,12 +61,22 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.6 }}
           className="mt-10"
         >
-          <Link
-            href="/register"
-            className="inline-flex h-14 items-center justify-center rounded-xl bg-gradient-to-r from-accent-purple to-accent-violet px-10 text-lg font-semibold text-[#08080f] shadow-glow transition-all hover:scale-105"
-          >
-            Начать сейчас
-          </Link>
+          {session?.user ? (
+            <Link
+              href="/dashboard"
+              className="inline-flex h-14 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-accent-purple to-accent-violet px-10 text-lg font-semibold text-[#08080f] shadow-glow transition-all hover:scale-105"
+            >
+              <IconDashboard className="w-5 h-5" />
+              Перейти в кабинет
+            </Link>
+          ) : (
+            <Link
+              href="/register"
+              className="inline-flex h-14 items-center justify-center rounded-xl bg-gradient-to-r from-accent-purple to-accent-violet px-10 text-lg font-semibold text-[#08080f] shadow-glow transition-all hover:scale-105"
+            >
+              Начать сейчас
+            </Link>
+          )}
         </motion.div>
       </motion.div>
 

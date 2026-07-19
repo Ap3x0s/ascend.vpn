@@ -8,7 +8,6 @@ import {
   IconBell,
   IconUser,
   IconMail,
-  IconTrash,
   IconCopy,
   IconCheck,
   IconRefresh,
@@ -183,22 +182,6 @@ export default function SettingsPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-red-500/30">
-            <CardHeader>
-              <CardTitle className="text-base text-red-400 flex items-center gap-2">
-                <IconTrash className="w-4 h-4" />
-                Опасная зона
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted mb-4">
-                Удаление аккаунта необратимо. Все данные будут удалены.
-              </p>
-              <button className="w-full py-2 rounded-lg border border-red-500/50 text-red-400 text-sm hover:bg-red-500/10 transition-colors">
-                Удалить аккаунт
-              </button>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </div>

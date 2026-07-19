@@ -2,14 +2,16 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { getPlanName, PLAN_DEVICES, PLAN_LOCATIONS } from "@/lib/constants";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   IconShieldCheck,
   IconClock,
   IconDeviceMobile,
   IconWorld,
-  IconCreditCard,
-  IconArrowRight,
+  IconUser,
+  IconMail,
+  IconCalendar,
+  IconKey,
 } from "@tabler/icons-react";
 import Link from "next/link";
 
@@ -22,7 +24,6 @@ export default async function DashboardPage() {
     include: {
       subscriptions: { orderBy: { createdAt: "desc" }, take: 1 },
       devices: true,
-      payments: { orderBy: { date: "desc" }, take: 3 },
     },
   });
 
@@ -46,182 +47,187 @@ export default async function DashboardPage() {
     ? (PLAN_LOCATIONS[subscription.plan] || []).length
     : 0;
 
+  // Days since registration
+  const memberSince = user?.createdAt
+    ? Math.floor((now.getTime() - new Date(user.createdAt).getTime()) / (1000 * 60 * 60 * 24))
+    : 0;
+
   return (
     <div className="space-y-6">
-      {/* Welcome */}
-      <div>
-        <h1 className="text-2xl font-bold">Обзор</h1>
-        <p className="text-muted text-sm mt-1">
-          Добро пожаловать{user?.name ? `, ${user.name}` : ""}!
-        </p>
-      </div>
-
-      {/* Main stats grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Subscription status */}
-        <Card className={subscription ? "border-green-500/30" : ""}>
-          <CardContent className="p-5">
-            <div className="flex items-center gap-3 mb-3">
-              <div className={`p-2 rounded-lg ${subscription ? "bg-green-500/15" : "bg-gray-500/15"}`}>
-                <IconShieldCheck className={`w-5 h-5 ${subscription ? "text-green-400" : "text-gray-400"}`} />
+      {/* Profile & Subscription */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Profile card */}
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-16 w-16 rounded-full bg-accent-purple/20 flex items-center justify-center">
+                <IconUser className="h-8 w-8 text-accent-purple" />
               </div>
-              <span className="text-sm text-muted">Подписка</span>
+              <div>
+                <h2 className="text-lg font-bold text-white">{user?.name || "Пользователь"}</h2>
+                <p className="text-sm text-muted flex items-center gap-1">
+                  <IconMail className="w-3 h-3" />
+                  {user?.email}
+                </p>
+              </div>
             </div>
-            <p className="text-xl font-bold text-white">
-              {subscription ? getPlanName(subscription.plan) : "Не активна"}
-            </p>
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center justify-between py-2 border-b border-border">
+                <span className="text-muted">Участник</span>
+                <span className="text-white">{memberSince} дн.</span>
+              </div>
+              <div className="flex items-center justify-between py-2 border-b border-border">
+                <span className="text-muted">Регистрация</span>
+                <span className="text-white">
+                  {user?.createdAt
+                    ? new Date(user.createdAt).toLocaleDateString("ru-RU")
+                    : "—"}
+                </span>
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <span className="text-muted">ID</span>
+                <span className="text-white font-mono text-xs">
+                  {user?.id?.slice(0, 8)}...
+                </span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Subscription card */}
+        <Card className="lg:col-span-2">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className={`p-3 rounded-xl ${subscription ? "bg-green-500/15" : "bg-gray-500/15"}`}>
+                  <IconShieldCheck className={`h-6 w-6 ${subscription ? "text-green-400" : "text-gray-400"}`} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white">
+                    {subscription ? getPlanName(subscription.plan) : "Нет подписки"}
+                  </h3>
+                  <p className={`text-sm ${subscription ? "text-green-400" : "text-gray-400"}`}>
+                    {subscription ? "Активна" : "Не активна"}
+                  </p>
+                </div>
+              </div>
+              {!subscription && (
+                <Link
+                  href="/#pricing"
+                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-accent-purple to-accent-violet text-white text-sm font-medium hover:scale-105 transition-transform"
+                >
+                  Купить подписку
+                </Link>
+              )}
+            </div>
+
             {subscription && (
-              <p className="text-xs text-muted mt-1">
-                {new Date(subscription.startDate).toLocaleDateString("ru-RU")} —{" "}
-                {endDate?.toLocaleDateString("ru-RU")}
-              </p>
+              <>
+                {/* Dates */}
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="p-3 rounded-lg bg-white/[0.03]">
+                    <p className="text-xs text-muted mb-1">Начало</p>
+                    <p className="text-sm font-medium text-white">
+                      {new Date(subscription.startDate).toLocaleDateString("ru-RU")}
+                    </p>
+                  </div>
+                  <div className="p-3 rounded-lg bg-white/[0.03]">
+                    <p className="text-xs text-muted mb-1">Окончание</p>
+                    <p className="text-sm font-medium text-white">
+                      {endDate?.toLocaleDateString("ru-RU")}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Progress */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-muted">Осталось {daysLeft} дн.</span>
+                    <span className="text-sm text-white">{Math.round(progress)}%</span>
+                  </div>
+                  <div className="h-3 rounded-full bg-border overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-accent-purple to-accent-violet transition-all"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                </div>
+
+                {/* Quick stats */}
+                <div className="grid grid-cols-3 gap-4 mt-6">
+                  <div className="text-center p-3 rounded-lg bg-white/[0.03]">
+                    <IconDeviceMobile className="w-5 h-5 text-accent-blue mx-auto mb-1" />
+                    <p className="text-lg font-bold text-white">
+                      {user?.devices.length || 0}/{maxDevices}
+                    </p>
+                    <p className="text-xs text-muted">Устройства</p>
+                  </div>
+                  <div className="text-center p-3 rounded-lg bg-white/[0.03]">
+                    <IconWorld className="w-5 h-5 text-accent-purple mx-auto mb-1" />
+                    <p className="text-lg font-bold text-white">{availableLocations}</p>
+                    <p className="text-xs text-muted">Локации</p>
+                  </div>
+                  <div className="text-center p-3 rounded-lg bg-white/[0.03]">
+                    <IconKey className="w-5 h-5 text-accent-violet mx-auto mb-1" />
+                    <p className="text-lg font-bold text-white">AES-256</p>
+                    <p className="text-xs text-muted">Шифрование</p>
+                  </div>
+                </div>
+              </>
             )}
-          </CardContent>
-        </Card>
-
-        {/* Days left */}
-        <Card>
-          <CardContent className="p-5">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="p-2 rounded-lg bg-accent-purple/15">
-                <IconClock className="w-5 h-5 text-accent-purple" />
-              </div>
-              <span className="text-sm text-muted">Осталось</span>
-            </div>
-            <p className="text-xl font-bold text-white">{daysLeft} дн.</p>
-            <div className="mt-3 h-2 rounded-full bg-border overflow-hidden">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-accent-purple to-accent-violet transition-all"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <p className="text-xs text-muted mt-2">{Math.round(progress)}% использовано</p>
-          </CardContent>
-        </Card>
-
-        {/* Devices */}
-        <Card>
-          <CardContent className="p-5">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="p-2 rounded-lg bg-accent-blue/15">
-                <IconDeviceMobile className="w-5 h-5 text-accent-blue" />
-              </div>
-              <span className="text-sm text-muted">Устройства</span>
-            </div>
-            <p className="text-xl font-bold text-white">
-              {user?.devices.length || 0} / {maxDevices}
-            </p>
-            <p className="text-xs text-muted mt-1">
-              {user?.devices.filter((d) => d.isActive).length || 0} активных
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Locations */}
-        <Card>
-          <CardContent className="p-5">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="p-2 rounded-lg bg-accent-violet/15">
-                <IconWorld className="w-5 h-5 text-accent-violet" />
-              </div>
-              <span className="text-sm text-muted">Локации</span>
-            </div>
-            <p className="text-xl font-bold text-white">{availableLocations}</p>
-            <Link
-              href="/dashboard/locations"
-              className="text-xs text-accent-purple hover:underline mt-1 inline-flex items-center gap-1"
-            >
-              Подробнее <IconArrowRight className="w-3 h-3" />
-            </Link>
           </CardContent>
         </Card>
       </div>
 
-      {/* Quick actions */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent payments */}
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-base flex items-center gap-2">
-                <IconCreditCard className="w-4 h-4 text-accent-purple" />
-                Последние платежи
-              </CardTitle>
-              <Link href="/dashboard/payments" className="text-xs text-accent-purple hover:underline">
-                Все →
-              </Link>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {user?.payments && user.payments.length > 0 ? (
-              <div className="space-y-2">
-                {user.payments.map((payment) => (
-                  <div
-                    key={payment.id}
-                    className="flex items-center justify-between py-2 border-b border-border last:border-0"
-                  >
-                    <div>
-                      <p className="text-sm text-white">{getPlanName(payment.plan)}</p>
-                      <p className="text-xs text-dim">
-                        {new Date(payment.date).toLocaleDateString("ru-RU")}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm font-medium text-white">{payment.amount}₽</p>
-                      <p className="text-xs text-green-400">Оплачено</p>
-                    </div>
-                  </div>
-                ))}
+      {/* Quick info cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Link href="/dashboard/locations">
+          <Card className="hover:border-accent-purple/30 transition-colors cursor-pointer h-full">
+            <CardContent className="p-5">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-accent-purple/15">
+                  <IconWorld className="w-5 h-5 text-accent-purple" />
+                </div>
+                <div>
+                  <p className="font-medium text-white">Статистика локаций</p>
+                  <p className="text-xs text-muted">Трафик по серверам →</p>
+                </div>
               </div>
-            ) : (
-              <p className="text-sm text-muted py-4 text-center">Нет платежей</p>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Link>
 
-        {/* Devices */}
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-base flex items-center gap-2">
-                <IconDeviceMobile className="w-4 h-4 text-accent-purple" />
-                Устройства
-              </CardTitle>
-              <Link href="/dashboard/devices" className="text-xs text-accent-purple hover:underline">
-                Все →
-              </Link>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {user?.devices && user.devices.length > 0 ? (
-              <div className="space-y-2">
-                {user.devices.map((device) => (
-                  <div
-                    key={device.id}
-                    className="flex items-center justify-between py-2 border-b border-border last:border-0"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`h-2 w-2 rounded-full ${
-                          device.isActive ? "bg-green-400" : "bg-gray-500"
-                        }`}
-                      />
-                      <div>
-                        <p className="text-sm text-white">{device.name}</p>
-                        <p className="text-xs text-dim">{device.type}</p>
-                      </div>
-                    </div>
-                    <span className="text-xs text-muted">
-                      {device.isActive ? "Онлайн" : "Офлайн"}
-                    </span>
-                  </div>
-                ))}
+        <Link href="/dashboard/devices">
+          <Card className="hover:border-accent-purple/30 transition-colors cursor-pointer h-full">
+            <CardContent className="p-5">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-accent-blue/15">
+                  <IconDeviceMobile className="w-5 h-5 text-accent-blue" />
+                </div>
+                <div>
+                  <p className="font-medium text-white">Мои устройства</p>
+                  <p className="text-xs text-muted">Управление устройствами →</p>
+                </div>
               </div>
-            ) : (
-              <p className="text-sm text-muted py-4 text-center">Нет устройств</p>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/dashboard/settings">
+          <Card className="hover:border-accent-purple/30 transition-colors cursor-pointer h-full">
+            <CardContent className="p-5">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-accent-violet/15">
+                  <IconKey className="w-5 h-5 text-accent-violet" />
+                </div>
+                <div>
+                  <p className="font-medium text-white">Настройки</p>
+                  <p className="text-xs text-muted">Профиль и безопасность →</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
     </div>
   );

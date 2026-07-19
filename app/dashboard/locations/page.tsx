@@ -7,6 +7,7 @@ import {
   IconUpload,
   IconClock,
   IconInfoCircle,
+  IconServer,
   IconWifi,
 } from "@tabler/icons-react";
 import { getPingColor, formatTraffic } from "@/lib/constants";
@@ -20,7 +21,12 @@ const locations = [
     ping: 12,
     status: "online" as const,
     myTraffic: { download: 89.5, upload: 24.1 },
-    lastUsed: "Вчера",
+    lastConnection: {
+      date: "18.07.2026",
+      time: "14:32",
+      duration: "3ч 24мин",
+      device: "iPhone 15 Pro",
+    },
   },
   {
     id: "de-frankfurt",
@@ -30,7 +36,12 @@ const locations = [
     ping: 18,
     status: "online" as const,
     myTraffic: { download: 45.2, upload: 12.3 },
-    lastUsed: "2 часа назад",
+    lastConnection: {
+      date: "17.07.2026",
+      time: "09:15",
+      duration: "1ч 45мин",
+      device: "MacBook Pro",
+    },
   },
   {
     id: "fi-helsinki",
@@ -40,7 +51,12 @@ const locations = [
     ping: 22,
     status: "online" as const,
     myTraffic: { download: 23.1, upload: 8.7 },
-    lastUsed: "5 дней назад",
+    lastConnection: {
+      date: "13.07.2026",
+      time: "18:45",
+      duration: "52мин",
+      device: "iPhone 15 Pro",
+    },
   },
   {
     id: "us-newyork",
@@ -50,7 +66,12 @@ const locations = [
     ping: 45,
     status: "online" as const,
     myTraffic: { download: 12.8, upload: 3.2 },
-    lastUsed: "3 дня назад",
+    lastConnection: {
+      date: "15.07.2026",
+      time: "21:10",
+      duration: "28мин",
+      device: "MacBook Pro",
+    },
   },
 ];
 
@@ -112,73 +133,113 @@ export default function LocationsPage() {
       </div>
 
       {/* Locations list */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         {locations.map((location) => {
           const locTotal = location.myTraffic.download + location.myTraffic.upload;
-          const downloadPercent = (location.myTraffic.download / locTotal) * 100;
+          const downloadPercent = Math.round((location.myTraffic.download / locTotal) * 100);
 
           return (
             <Card key={location.id} className="hover:border-accent-purple/30 transition-colors">
-              <CardContent className="p-5">
-                {/* Header row */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">{location.flag}</span>
+              <CardContent className="p-6">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex items-center gap-4">
+                    <span className="text-3xl">{location.flag}</span>
                     <div>
-                      <h3 className="font-semibold text-white">{location.country}</h3>
-                      <p className="text-xs text-muted">{location.city}</p>
+                      <h3 className="text-lg font-semibold text-white">{location.country}</h3>
+                      <p className="text-sm text-muted">{location.city}</p>
                     </div>
                   </div>
-
                   <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-green-400" />
-                    <span className="text-xs text-muted">{location.lastUsed}</span>
+                    <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
+                    <span className="text-sm text-muted">Онлайн</span>
                   </div>
                 </div>
 
-                {/* Stats row */}
-                <div className="grid grid-cols-3 gap-4 mb-4">
-                  <div>
-                    <p className="text-xs text-muted mb-1">Пинг</p>
-                    <p className={`text-lg font-semibold ${getPingColor(location.ping)}`}>
+                {/* Stats grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+                  <div className="p-3 rounded-lg bg-white/[0.03]">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <IconClock className="w-3.5 h-3.5 text-muted" />
+                      <span className="text-xs text-muted">Пинг</span>
+                    </div>
+                    <p className={`text-xl font-bold ${getPingColor(location.ping)}`}>
                       {location.ping}ms
                     </p>
                   </div>
-                  <div>
-                    <p className="text-xs text-muted mb-1">Загрузка</p>
-                    <p className="text-lg font-semibold text-white">
-                      {location.myTraffic.download} ГБ
+
+                  <div className="p-3 rounded-lg bg-white/[0.03]">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <IconDownload className="w-3.5 h-3.5 text-accent-blue" />
+                      <span className="text-xs text-muted">Загрузка</span>
+                    </div>
+                    <p className="text-xl font-bold text-white">
+                      {location.myTraffic.download} <span className="text-sm font-normal text-muted">ГБ</span>
                     </p>
                   </div>
-                  <div>
-                    <p className="text-xs text-muted mb-1">Отдача</p>
-                    <p className="text-lg font-semibold text-white">
-                      {location.myTraffic.upload} ГБ
+
+                  <div className="p-3 rounded-lg bg-white/[0.03]">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <IconUpload className="w-3.5 h-3.5 text-accent-violet" />
+                      <span className="text-xs text-muted">Отдача</span>
+                    </div>
+                    <p className="text-xl font-bold text-white">
+                      {location.myTraffic.upload} <span className="text-sm font-normal text-muted">ГБ</span>
+                    </p>
+                  </div>
+
+                  <div className="p-3 rounded-lg bg-white/[0.03]">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <IconServer className="w-3.5 h-3.5 text-accent-purple" />
+                      <span className="text-xs text-muted">Всего</span>
+                    </div>
+                    <p className="text-xl font-bold gradient-text">
+                      {locTotal.toFixed(1)} <span className="text-sm font-normal text-muted">ГБ</span>
                     </p>
                   </div>
                 </div>
 
-                {/* Traffic bar */}
-                <div>
-                  <div className="flex items-center justify-between text-xs text-muted mb-1.5">
-                    <span>Загрузка</span>
-                    <span>{location.myTraffic.download} ГБ</span>
+                {/* Traffic ratio */}
+                <div className="mb-5">
+                  <div className="flex items-center justify-between text-xs text-muted mb-2">
+                    <span>Соотношение трафика</span>
+                    <span>{downloadPercent}% загрузка / {100 - downloadPercent}% отдача</span>
                   </div>
-                  <div className="h-1.5 rounded-full bg-border overflow-hidden">
+                  <div className="h-2.5 rounded-full bg-border overflow-hidden flex">
                     <div
-                      className="h-full bg-accent-blue rounded-full"
+                      className="bg-accent-blue transition-all"
                       style={{ width: `${downloadPercent}%` }}
                     />
-                  </div>
-                  <div className="flex items-center justify-between text-xs text-muted mt-1.5">
-                    <span>Отдача</span>
-                    <span>{location.myTraffic.upload} ГБ</span>
-                  </div>
-                  <div className="h-1.5 rounded-full bg-border overflow-hidden">
                     <div
-                      className="h-full bg-accent-violet rounded-full"
+                      className="bg-accent-violet transition-all"
                       style={{ width: `${100 - downloadPercent}%` }}
                     />
+                  </div>
+                </div>
+
+                {/* Last connection */}
+                <div className="p-4 rounded-xl bg-accent-purple/5 border border-accent-purple/10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <IconClock className="w-4 h-4 text-accent-purple" />
+                    <span className="text-sm font-medium text-white">Последнее подключение</span>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                    <div>
+                      <p className="text-xs text-muted">Дата</p>
+                      <p className="text-white">{location.lastConnection.date}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted">Время</p>
+                      <p className="text-white">{location.lastConnection.time}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted">Длительность</p>
+                      <p className="text-white">{location.lastConnection.duration}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted">Устройство</p>
+                      <p className="text-white">{location.lastConnection.device}</p>
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -193,14 +254,12 @@ export default function LocationsPage() {
           <IconInfoCircle className="w-5 h-5 text-accent-purple shrink-0 mt-0.5" />
           <div className="text-sm text-muted">
             <p>
-              Подключение к серверам осуществляется через приложения{" "}
+              Подключение через приложения{" "}
               <span className="text-white">Hiddify</span>,{" "}
               <span className="text-white">Happy</span>,{" "}
               <span className="text-white">V2rayNG</span> и другие VPN-клиенты.
             </p>
-            <p className="mt-1">
-              Статистика обновляется каждые 5 минут.
-            </p>
+            <p className="mt-1">Статистика обновляется каждые 5 минут.</p>
           </div>
         </CardContent>
       </Card>

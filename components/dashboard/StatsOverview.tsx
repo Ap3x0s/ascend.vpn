@@ -5,24 +5,9 @@ import {
   IconShieldCheck,
   IconClock,
   IconDeviceDesktop,
-  IconServer,
   IconWorld,
-  IconWifi,
 } from "@tabler/icons-react";
-
-const PLAN_NAMES: Record<string, string> = {
-  "30d": "30 дней",
-  "90d": "90 дней",
-  "180d": "180 дней",
-  "365d": "365 дней",
-};
-
-const LOCATIONS = [
-  { country: "Германия", flag: "🇩🇪", city: "Франкфурт", ping: "18ms" },
-  { country: "США", flag: "🇺🇸", city: "Нью-Йорк", ping: "45ms" },
-  { country: "Латвия", flag: "🇱🇻", city: "Рига", ping: "12ms" },
-  { country: "Финляндия", flag: "🇫🇮", city: "Хельсинки", ping: "22ms" },
-];
+import { getPlanName } from "@/lib/constants";
 
 interface StatsOverviewProps {
   subscription: {
@@ -41,122 +26,83 @@ export function StatsOverview({
   activeDevices,
 }: StatsOverviewProps) {
   const now = new Date();
-  const daysLeft = subscription
-    ? Math.max(
-        0,
-        Math.ceil(
-          (new Date(subscription.endDate).getTime() - now.getTime()) /
-            (1000 * 60 * 60 * 24)
-        )
-      )
+  const endDate = subscription ? new Date(subscription.endDate) : null;
+  const daysLeft = endDate
+    ? Math.max(0, Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))
     : 0;
 
   const totalDays = subscription
     ? Math.ceil(
         (new Date(subscription.endDate).getTime() -
-          new Date(subscription.startDate ?? subscription.endDate).getTime()) /
+          new Date(subscription.startDate).getTime()) /
           (1000 * 60 * 60 * 24)
       )
     : 30;
 
   const progressWidth = Math.min(100, (daysLeft / (totalDays || 1)) * 100);
-  const planName =
-    subscription?.plan ? PLAN_NAMES[subscription.plan] ?? subscription.plan : "—";
+  const planName = subscription ? getPlanName(subscription.plan) : "—";
   const isActive = subscription?.status === "active";
 
   return (
-    <div className="space-y-6">
-      {/* Main stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-6 flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-accent-purple/15">
-              <IconShieldCheck className="w-6 h-6 text-accent-purple" />
-            </div>
-            <div>
-              <p className="text-sm text-muted">Статус</p>
-              <p className="text-lg font-semibold text-white">
-                {isActive ? "Активна" : "Неактивна"}
-              </p>
-              <p className="text-xs text-dim">{planName}</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6 flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-accent-violet/15">
-              <IconClock className="w-6 h-6 text-accent-violet" />
-            </div>
-            <div className="flex-1">
-              <p className="text-sm text-muted">Осталось дней</p>
-              <p className="text-lg font-semibold text-white">{daysLeft}</p>
-              <div className="mt-2 h-1.5 rounded-full bg-border overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-accent-purple to-accent-violet"
-                  style={{ width: `${progressWidth}%` }}
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6 flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-accent-blue/15">
-              <IconDeviceDesktop className="w-6 h-6 text-accent-blue" />
-            </div>
-            <div>
-              <p className="text-sm text-muted">Устройства</p>
-              <p className="text-lg font-semibold text-white">
-                {activeDevices} / {devicesCount}
-              </p>
-              <p className="text-xs text-dim">активных</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6 flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-accent-purple/15">
-              <IconWorld className="w-6 h-6 text-accent-purple" />
-            </div>
-            <div>
-              <p className="text-sm text-muted">Локации</p>
-              <p className="text-lg font-semibold text-white">
-                {LOCATIONS.length} доступно
-              </p>
-              <p className="text-xs text-dim">в вашем тарифе</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Server locations */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <Card>
-        <CardContent className="p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <IconServer className="w-5 h-5 text-accent-purple" />
-            <h3 className="font-semibold text-white">Доступные локации</h3>
+        <CardContent className="p-5">
+          <div className="flex items-center gap-3 mb-3">
+            <div className={`p-2 rounded-lg ${isActive ? "bg-green-500/15" : "bg-gray-500/15"}`}>
+              <IconShieldCheck className={`w-5 h-5 ${isActive ? "text-green-400" : "text-gray-400"}`} />
+            </div>
+            <span className="text-sm text-muted">Статус</span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {LOCATIONS.map((loc) => (
-              <div
-                key={loc.country}
-                className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/[0.05] hover:border-accent-purple/30 transition-colors cursor-pointer"
-              >
-                <span className="text-2xl">{loc.flag}</span>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-white">{loc.country}</p>
-                  <p className="text-xs text-dim">{loc.city}</p>
-                </div>
-                <div className="flex items-center gap-1">
-                  <IconWifi className="w-3 h-3 text-accent-purple" />
-                  <span className="text-xs text-muted">{loc.ping}</span>
-                </div>
-              </div>
-            ))}
+          <p className="text-lg font-semibold text-white">
+            {isActive ? "Активна" : "Неактивна"}
+          </p>
+          <p className="text-xs text-dim mt-1">{planName}</p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-5">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="p-2 rounded-lg bg-accent-purple/15">
+              <IconClock className="w-5 h-5 text-accent-purple" />
+            </div>
+            <span className="text-sm text-muted">Осталось дней</span>
           </div>
+          <p className="text-lg font-semibold text-white">{daysLeft}</p>
+          <div className="mt-2 h-1.5 rounded-full bg-border overflow-hidden">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-accent-purple to-accent-violet"
+              style={{ width: `${progressWidth}%` }}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-5">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="p-2 rounded-lg bg-accent-blue/15">
+              <IconDeviceDesktop className="w-5 h-5 text-accent-blue" />
+            </div>
+            <span className="text-sm text-muted">Устройства</span>
+          </div>
+          <p className="text-lg font-semibold text-white">
+            {activeDevices} / {devicesCount}
+          </p>
+          <p className="text-xs text-dim mt-1">активных</p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-5">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="p-2 rounded-lg bg-accent-violet/15">
+              <IconWorld className="w-5 h-5 text-accent-violet" />
+            </div>
+            <span className="text-sm text-muted">Локации</span>
+          </div>
+          <p className="text-lg font-semibold text-white">4</p>
+          <p className="text-xs text-dim mt-1">доступно</p>
         </CardContent>
       </Card>
     </div>

@@ -11,6 +11,9 @@ import {
   IconBrandTwitch,
   IconBrandSpotify,
   IconBrandNetflix,
+  IconRobot,
+  IconNotebook,
+  IconBrandSteam,
 } from "@tabler/icons-react";
 
 const services = [
@@ -23,6 +26,10 @@ const services = [
   { icon: IconBrandTwitch, name: "Twitch", color: "#9146FF" },
   { icon: IconBrandSpotify, name: "Spotify", color: "#1DB954" },
   { icon: IconBrandNetflix, name: "Netflix", color: "#E50914" },
+  { icon: IconRobot, name: "ChatGPT", color: "#10A37F" },
+  { icon: IconRobot, name: "Claude", color: "#D97757" },
+  { icon: IconNotebook, name: "Notion", color: "#FFFFFF" },
+  { icon: IconBrandSteam, name: "Steam", color: "#1B2838" },
 ];
 
 // Triple for seamless infinite loop
@@ -43,7 +50,7 @@ export function BlockedServices() {
             Доступ к <span className="gradient-text">заблокированным сервисам</span>
           </h2>
           <p className="text-muted max-w-xl mx-auto text-sm">
-            Получите доступ к YouTube, Telegram, Instagram и другим сервисам
+            Получите доступ к YouTube, Telegram, ChatGPT и другим сервисам
           </p>
         </motion.div>
       </div>

@@ -1,120 +1,110 @@
 "use client";
 
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   IconReceipt,
   IconCheck,
   IconX,
-  IconClock,
   IconCalendar,
-  IconRefresh,
+  IconChevronLeft,
+  IconChevronRight,
+  IconClock,
 } from "@tabler/icons-react";
 import { getPlanName } from "@/lib/constants";
 
-const mockPayments = [
-  {
-    id: "1",
-    plan: "180d",
-    amount: 1499,
-    date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30),
-    status: "completed" as const,
-    method: "Банковская карта",
-    receipt: "№284719",
-  },
-  {
-    id: "2",
-    plan: "90d",
-    amount: 799,
-    date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 120),
-    status: "completed" as const,
-    method: "СБП",
-    receipt: "№198234",
-  },
-  {
-    id: "3",
-    plan: "30d",
-    amount: 299,
-    date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 155),
-    status: "completed" as const,
-    method: "Банковская карта",
-    receipt: "№156782",
-  },
-];
+// Mock data - 25 платежей для тестирования пагинации
+const allPayments = Array.from({ length: 25 }, (_, i) => ({
+  id: String(i + 1),
+  plan: ["30d", "90d", "180d", "365d"][i % 4],
+  amount: [299, 799, 1499, 2499][i % 4],
+  date: new Date(Date.now() - 1000 * 60 * 60 * 24 * (i * 15 + Math.floor(Math.random() * 10))),
+  status: i === 5 ? "failed" as const : "completed" as const,
+  method: ["Банковская карта", "СБП", "Криптовалюта"][i % 3],
+  receipt: `№${100000 + i}`,
+}));
+
+const ITEMS_PER_PAGE = 10;
 
 export default function PaymentsPage() {
-  const successfulPayments = mockPayments.filter((p) => p.status === "completed").length;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [payments, setPayments] = useState(allPayments);
+
+  const totalPages = Math.ceil(payments.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentPayments = payments.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  // Keyboard navigation
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === "ArrowLeft" && currentPage > 1) {
+      setCurrentPage((p) => p - 1);
+    } else if (e.key === "ArrowRight" && currentPage < totalPages) {
+      setCurrentPage((p) => p + 1);
+    }
+  }, [currentPage, totalPages]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
+
+  // Pagination range
+  const getPaginationRange = () => {
+    const range = [];
+    const maxVisible = 5;
+
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) range.push(i);
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) range.push(i);
+        range.push("...");
+        range.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        range.push(1);
+        range.push("...");
+        for (let i = totalPages - 3; i <= totalPages; i++) range.push(i);
+      } else {
+        range.push(1);
+        range.push("...");
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) range.push(i);
+        range.push("...");
+        range.push(totalPages);
+      }
+    }
+
+    return range;
+  };
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">История платежей</h1>
-        <p className="text-muted text-sm mt-1">
-          Ваши оплаты и подписки
-        </p>
-      </div>
-
-      {/* Quick stats */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <IconCheck className="w-4 h-4 text-green-400" />
-              <span className="text-xs text-muted">Успешных</span>
-            </div>
-            <p className="text-2xl font-bold text-white">{successfulPayments}</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <IconReceipt className="w-4 h-4 text-accent-purple" />
-              <span className="text-xs text-muted">Последняя оплата</span>
-            </div>
-            <p className="text-lg font-bold text-white">
-              {mockPayments[0]
-                ? new Date(mockPayments[0].date).toLocaleDateString("ru-RU")
-                : "—"}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="col-span-2 md:col-span-1">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <IconRefresh className="w-4 h-4 text-accent-blue" />
-              <span className="text-xs text-muted">Продление</span>
-            </div>
-            <p className="text-lg font-bold text-white">
-              {mockPayments[0]
-                ? (() => {
-                    const nextDate = new Date(mockPayments[0].date);
-                    nextDate.setDate(nextDate.getDate() + 180);
-                    return nextDate.toLocaleDateString("ru-RU");
-                  })()
-                : "—"}
-            </p>
-          </CardContent>
-        </Card>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">История платежей</h1>
+          <p className="text-muted text-sm mt-1">
+            {payments.length} платежей за всё время
+          </p>
+        </div>
+        <div className="flex items-center gap-2 text-sm text-muted">
+          <IconClock className="w-4 h-4" />
+          Стрелки ← → для навигации
+        </div>
       </div>
 
       {/* Payments list */}
       <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Все платежи</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {mockPayments.length === 0 ? (
-            <div className="text-center py-12">
+        <CardContent className="p-0">
+          {currentPayments.length === 0 ? (
+            <div className="text-center py-16">
               <IconReceipt className="w-12 h-12 text-gray-500 mx-auto mb-4" />
               <p className="text-muted">Нет платежей</p>
             </div>
           ) : (
-            <div className="space-y-3">
-              {mockPayments.map((payment) => (
+            <div className="divide-y divide-border">
+              {currentPayments.map((payment) => (
                 <div
                   key={payment.id}
-                  className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] hover:bg-white/[0.05] transition-colors"
+                  className="flex items-center justify-between p-4 hover:bg-white/[0.02] transition-colors"
                 >
                   <div className="flex items-center gap-4">
                     <div
@@ -163,6 +153,55 @@ export default function PaymentsPage() {
           )}
         </CardContent>
       </Card>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2">
+          {/* Previous */}
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+            className="p-2 rounded-lg border border-border hover:border-accent-purple/30 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          >
+            <IconChevronLeft className="h-4 w-4" />
+          </button>
+
+          {/* Page numbers */}
+          {getPaginationRange().map((page, i) =>
+            page === "..." ? (
+              <span key={`dots-${i}`} className="px-2 text-muted">
+                ...
+              </span>
+            ) : (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page as number)}
+                className={`w-10 h-10 rounded-lg text-sm font-medium transition-all ${
+                  currentPage === page
+                    ? "bg-accent-purple text-white"
+                    : "border border-border hover:border-accent-purple/30 text-muted hover:text-white"
+                }`}
+              >
+                {page}
+              </button>
+            )
+          )}
+
+          {/* Next */}
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+            className="p-2 rounded-lg border border-border hover:border-accent-purple/30 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          >
+            <IconChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+
+      {/* Page info */}
+      <div className="text-center text-sm text-muted">
+        Страница {currentPage} из {totalPages}
+      </div>
 
       {/* Renewal info */}
       <Card className="border-accent-purple/20">

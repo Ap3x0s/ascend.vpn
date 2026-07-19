@@ -5,13 +5,11 @@ import { getPlanName, PLAN_DEVICES, PLAN_LOCATIONS } from "@/lib/constants";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   IconShieldCheck,
-  IconClock,
   IconDeviceMobile,
   IconWorld,
   IconUser,
   IconMail,
   IconKey,
-  IconWifi,
   IconAlertTriangle,
   IconNews,
 } from "@tabler/icons-react";
@@ -53,11 +51,6 @@ export default async function DashboardPage() {
     ? Math.floor((now.getTime() - new Date(user.createdAt).getTime()) / (1000 * 60 * 60 * 24))
     : 0;
 
-  // Connection status (mock)
-  const isConnected = true;
-  const currentServer = "🇱🇻 Рига, Латвия";
-  const currentPing = 12;
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -67,34 +60,6 @@ export default async function DashboardPage() {
           Добро пожаловать{user?.name ? `, ${user.name}` : ""}!
         </p>
       </div>
-
-      {/* Connection status */}
-      <Card className={isConnected ? "border-green-500/30 bg-green-500/5" : ""}>
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className={`h-3 w-3 rounded-full ${isConnected ? "bg-green-400 animate-pulse" : "bg-gray-500"}`} />
-              <div>
-                <p className="font-medium text-white">
-                  {isConnected ? "Подключено" : "Не подключено"}
-                </p>
-                {isConnected && (
-                  <p className="text-sm text-muted flex items-center gap-1">
-                    <IconWorld className="w-3 h-3" />
-                    {currentServer} • {currentPing}ms
-                  </p>
-                )}
-              </div>
-            </div>
-            {isConnected && (
-              <div className="flex items-center gap-2 text-sm text-green-400">
-                <IconWifi className="w-4 h-4" />
-                Защищено
-              </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Main content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

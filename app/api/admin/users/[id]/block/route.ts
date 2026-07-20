@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { adminAuthOptions } from "@/lib/admin-auth";
 import { prisma } from "@/lib/db";
+import { logAction } from "@/lib/audit";
 
 export async function POST(
   _request: NextRequest,
@@ -12,6 +13,12 @@ export async function POST(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Verify admin role
+  const role = (session.user as any)?.role;
+  if (role !== "admin" && role !== "superadmin") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   const { id } = await params;
 
   const user = await prisma.user.findUnique({ where: { id } });
@@ -20,6 +27,7 @@ export async function POST(
   }
 
   const newStatus = user.status === "active" ? "blocked" : "active";
+  const action = newStatus === "blocked" ? "user.block" : "user.unblock";
 
   const updated = await prisma.user.update({
     where: { id },
@@ -30,6 +38,14 @@ export async function POST(
       status: true,
     },
   });
+
+  // Log the action
+  await logAction(
+    (session.user as any).id,
+    action,
+    id,
+    JSON.stringify({ email: user.email, previousStatus: user.status, newStatus })
+  );
 
   return NextResponse.json({ user: updated });
 }

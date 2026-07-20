@@ -11,7 +11,14 @@ export default async function AdminLayout({
 }) {
   const session = await getServerSession(adminAuthOptions);
 
+  // Check if session exists and has admin role
   if (!session) {
+    redirect("/admin/login");
+  }
+
+  // Verify the session is from admin auth (not regular user)
+  const role = (session.user as any)?.role;
+  if (role !== "admin" && role !== "superadmin") {
     redirect("/admin/login");
   }
 

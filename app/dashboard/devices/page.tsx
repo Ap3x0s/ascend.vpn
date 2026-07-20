@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   IconDeviceDesktop,
@@ -66,7 +68,23 @@ function getTimeAgo(date: Date): string {
 }
 
 export default function DevicesPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [devices, setDevices] = useState(mockDevices);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
+
+  if (status === "loading") {
+    return <div className="flex items-center justify-center min-h-[50vh]"><p className="text-muted">Загрузка...</p></div>;
+  }
+
+  if (status === "unauthenticated") {
+    return null;
+  }
 
   const activeDevices = devices.filter((d) => d.isActive).length;
 

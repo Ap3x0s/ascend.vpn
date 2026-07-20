@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   IconWorld,
@@ -76,6 +79,23 @@ const locations = [
 ];
 
 export default function LocationsPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
+
+  if (status === "loading") {
+    return <div className="flex items-center justify-center min-h-[50vh]"><p className="text-muted">Загрузка...</p></div>;
+  }
+
+  if (status === "unauthenticated") {
+    return null;
+  }
+
   const totalDownload = locations.reduce((sum, loc) => sum + loc.myTraffic.download, 0);
   const totalUpload = locations.reduce((sum, loc) => sum + loc.myTraffic.upload, 0);
   const totalTraffic = totalDownload + totalUpload;

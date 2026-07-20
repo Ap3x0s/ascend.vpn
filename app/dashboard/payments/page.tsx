@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   IconReceipt,
@@ -28,7 +30,15 @@ const allPayments = Array.from({ length: 25 }, (_, i) => ({
 const ITEMS_PER_PAGE = 10;
 
 export default function PaymentsPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
 
   const totalPages = Math.ceil(allPayments.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -46,6 +56,14 @@ export default function PaymentsPage() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
+
+  if (status === "loading") {
+    return <div className="flex items-center justify-center min-h-[50vh]"><p className="text-muted">Загрузка...</p></div>;
+  }
+
+  if (status === "unauthenticated") {
+    return null;
+  }
 
   const getPaginationRange = () => {
     const range: (number | string)[] = [];

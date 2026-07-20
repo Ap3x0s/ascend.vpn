@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import {
   IconLock,
@@ -14,9 +16,13 @@ import {
 } from "@tabler/icons-react";
 
 export default function SettingsPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [copied, setCopied] = useState(false);
   const [notifications, setNotifications] = useState({
     email: true,
@@ -24,11 +30,67 @@ export default function SettingsPage() {
     marketing: false,
   });
 
+  if (status === "loading") {
+    return <div className="flex items-center justify-center min-h-[50vh]"><p className="text-muted">Загрузка...</p></div>;
+  }
+
+  if (status === "unauthenticated") {
+    router.push("/login");
+    return null;
+  }
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordMessage(null);
+
+    if (newPassword !== confirmPassword) {
+      setPasswordMessage({ type: "error", text: "Пароли не совпадают" });
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      setPasswordMessage({ type: "error", text: "Пароль должен быть минимум 8 символов" });
+      return;
+    }
+
+    if (!/[a-zA-Zа-яА-Я]/.test(newPassword) || !/[0-9]/.test(newPassword)) {
+      setPasswordMessage({ type: "error", text: "Пароль должен содержать буквы и цифры" });
+      return;
+    }
+
+    setIsChangingPassword(true);
+    try {
+      const res = await fetch("/api/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setPasswordMessage({ type: "error", text: data.error || "Ошибка при смене пароля" });
+        return;
+      }
+
+      setPasswordMessage({ type: "success", text: "Пароль успешно изменён" });
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch {
+      setPasswordMessage({ type: "error", text: "Ошибка соединения с сервером" });
+    } finally {
+      setIsChangingPassword(false);
+    }
+  };
+
   const handleCopyKey = () => {
     navigator.clipboard.writeText("asc_vpn_xxxxxxxxxxxxxxxxxxxx");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  const userEmail = (session?.user as any)?.email || "Неизвестно";
 
   return (
     <div className="space-y-6">
@@ -51,40 +113,56 @@ export default function SettingsPage() {
                 Рекомендуем менять пароль каждые 3 месяца
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-sm text-muted">Текущий пароль</label>
-                <input
-                  type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-lg bg-white/[0.03] border border-border text-white placeholder:text-dim focus:border-accent-purple focus:outline-none transition-colors"
-                  placeholder="Введите текущий пароль"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm text-muted">Новый пароль</label>
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-lg bg-white/[0.03] border border-border text-white placeholder:text-dim focus:border-accent-purple focus:outline-none transition-colors"
-                  placeholder="Минимум 8 символов"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm text-muted">Подтвердите пароль</label>
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-lg bg-white/[0.03] border border-border text-white placeholder:text-dim focus:border-accent-purple focus:outline-none transition-colors"
-                  placeholder="Повторите новый пароль"
-                />
-              </div>
-              <button className="px-4 py-2 rounded-lg bg-gradient-to-r from-accent-purple to-accent-violet text-white text-sm font-medium hover:scale-105 transition-transform">
-                Сохранить пароль
-              </button>
+            <CardContent>
+              <form onSubmit={handleChangePassword} className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-sm text-muted">Текущий пароль</label>
+                  <input
+                    type="password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-lg bg-white/[0.03] border border-border text-white placeholder:text-dim focus:border-accent-purple focus:outline-none transition-colors"
+                    placeholder="Введите текущий пароль"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm text-muted">Новый пароль</label>
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-lg bg-white/[0.03] border border-border text-white placeholder:text-dim focus:border-accent-purple focus:outline-none transition-colors"
+                    placeholder="Минимум 8 символов, буквы и цифры"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm text-muted">Подтвердите пароль</label>
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-lg bg-white/[0.03] border border-border text-white placeholder:text-dim focus:border-accent-purple focus:outline-none transition-colors"
+                    placeholder="Повторите новый пароль"
+                    required
+                  />
+                </div>
+
+                {passwordMessage && (
+                  <p className={`text-sm ${passwordMessage.type === "success" ? "text-green-400" : "text-red-400"}`}>
+                    {passwordMessage.text}
+                  </p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={isChangingPassword}
+                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-accent-purple to-accent-violet text-white text-sm font-medium hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isChangingPassword ? "Сохранение..." : "Сохранить пароль"}
+                </button>
+              </form>
             </CardContent>
           </Card>
 
@@ -102,7 +180,7 @@ export default function SettingsPage() {
             <CardContent className="space-y-4">
               <div className="flex items-center gap-2 p-3 rounded-lg bg-white/[0.03] border border-border">
                 <code className="flex-1 text-sm text-muted font-mono break-all">
-                  asc_vpn_xxxxxxxxxxxxxxxxxxxx
+                  ••••••••••••••••••••••••
                 </code>
                 <button
                   onClick={handleCopyKey}
@@ -172,12 +250,13 @@ export default function SettingsPage() {
                 <div className="h-20 w-20 rounded-full bg-accent-purple/20 flex items-center justify-center mb-4">
                   <IconUser className="h-10 w-10 text-accent-purple" />
                 </div>
-                <h3 className="font-semibold text-white">Пользователь</h3>
+                <h3 className="font-semibold text-white">
+                  {(session?.user as any)?.name || "Пользователь"}
+                </h3>
                 <p className="text-sm text-muted flex items-center gap-1 mt-1">
                   <IconMail className="w-3 h-3" />
-                  demo@ascendvpn.com
+                  {userEmail}
                 </p>
-                <p className="text-xs text-dim mt-2">Участник с 18.07.2026</p>
               </div>
             </CardContent>
           </Card>

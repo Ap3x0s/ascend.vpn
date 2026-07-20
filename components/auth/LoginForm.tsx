@@ -87,6 +87,7 @@ export function LoginForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                suppressHydrationWarning
               />
             </div>
           </div>
@@ -108,6 +109,7 @@ export function LoginForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                suppressHydrationWarning
               />
             </div>
           </div>

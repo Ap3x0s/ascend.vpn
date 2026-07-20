@@ -102,6 +102,7 @@ export function RegisterForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                suppressHydrationWarning
               />
             </div>
           </div>
@@ -118,6 +119,7 @@ export function RegisterForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                suppressHydrationWarning
               />
             </div>
           </div>
@@ -134,6 +136,7 @@ export function RegisterForm() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
+                suppressHydrationWarning
               />
             </div>
           </div>

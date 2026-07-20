@@ -1,16 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { adminAuthOptions } from "@/lib/admin-auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/db";
+import { logAction } from "@/lib/audit";
 
 export async function POST(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await getServerSession(adminAuthOptions);
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if ("error" in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
 
@@ -25,6 +24,13 @@ export async function POST(
     where: { id },
     data: { status: newStatus },
   });
+
+  await logAction(
+    session.user.id,
+    "server_toggled",
+    id,
+    `Toggled server ${server.name} from ${server.status} to ${newStatus}`
+  );
 
   return NextResponse.json({ server: updated });
 }

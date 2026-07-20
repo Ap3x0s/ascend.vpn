@@ -1,13 +1,10 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { adminAuthOptions } from "@/lib/admin-auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/db";
 
 export async function GET() {
-  const session = await getServerSession(adminAuthOptions);
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if ("error" in auth) return auth.error;
 
   const now = new Date();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);

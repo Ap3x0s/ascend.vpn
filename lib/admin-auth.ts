@@ -1,6 +1,8 @@
 import speakeasy from "speakeasy";
 import QRCode from "qrcode";
 import bcrypt from "bcryptjs";
+import { getServerSession } from "next-auth";
+import { NextResponse } from "next/server";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/db";
 
@@ -30,6 +32,7 @@ export const adminAuthOptions = {
           id: adminUser.id,
           email: adminUser.email,
           name: "Admin",
+          role: adminUser.role,
         };
       },
     }),
@@ -41,7 +44,7 @@ export const adminAuthOptions = {
     async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
         token.id = user.id;
-        token.role = "admin";
+        token.role = user.role;
       }
       return token;
     },
@@ -140,4 +143,16 @@ export async function activate2FA(
   });
 
   return true;
+}
+
+export async function requireAdmin() {
+  const session = await getServerSession(adminAuthOptions);
+  if (!session?.user) {
+    return { error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
+  }
+  const role = (session.user as any)?.role;
+  if (role !== "admin" && role !== "superadmin") {
+    return { error: NextResponse.json({ error: "Forbidden" }, { status: 403 }) };
+  }
+  return { session };
 }

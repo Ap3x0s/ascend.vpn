@@ -40,7 +40,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getServerSession(adminAuthOptions);
-  if (!session) {
+  if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -55,10 +55,47 @@ export async function PUT(
   const updateData: Record<string, unknown> = {};
 
   if (body.role !== undefined) {
+    // Only superadmin can change roles
+    const callerRole = (session.user as any)?.role;
+    if (callerRole !== "superadmin") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+    // Only allow 'admin' role
+    if (body.role !== "admin" && body.role !== "superadmin") {
+      return NextResponse.json(
+        { error: "Допустимые роли: admin, superadmin" },
+        { status: 400 }
+      );
+    }
     updateData.role = body.role;
   }
 
   if (body.password) {
+    // Password validation: min 12 chars, uppercase, lowercase, number
+    if (body.password.length < 12) {
+      return NextResponse.json(
+        { error: "Пароль должен содержать минимум 12 символов" },
+        { status: 400 }
+      );
+    }
+    if (!/[A-Z]/.test(body.password)) {
+      return NextResponse.json(
+        { error: "Пароль должен содержать хотя бы одну заглавную букву" },
+        { status: 400 }
+      );
+    }
+    if (!/[a-z]/.test(body.password)) {
+      return NextResponse.json(
+        { error: "Пароль должен содержать хотя бы одну строчную букву" },
+        { status: 400 }
+      );
+    }
+    if (!/[0-9]/.test(body.password)) {
+      return NextResponse.json(
+        { error: "Пароль должен содержать хотя бы одну цифру" },
+        { status: 400 }
+      );
+    }
     updateData.passwordHash = await hash(body.password, 12);
   }
 
@@ -90,8 +127,14 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getServerSession(adminAuthOptions);
-  if (!session) {
+  if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // Only superadmin can delete admins
+  const callerRole = (session.user as any)?.role;
+  if (callerRole !== "superadmin") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const { id } = await params;

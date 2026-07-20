@@ -1,28 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { adminAuthOptions } from "@/lib/admin-auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/db";
 import { logAction } from "@/lib/audit";
-
-// Helper to check admin role
-async function requireAdmin() {
-  const session = await getServerSession(adminAuthOptions);
-  if (!session) return { error: "Unauthorized", status: 401 };
-  const role = (session.user as any)?.role;
-  if (role !== "admin" && role !== "superadmin") {
-    return { error: "Forbidden", status: 403 };
-  }
-  return { session };
-}
 
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const auth = await requireAdmin();
-  if ("error" in auth) {
-    return NextResponse.json({ error: auth.error }, { status: auth.status });
-  }
+  if ("error" in auth) return auth.error;
 
   const { id } = await params;
 
@@ -82,9 +68,8 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const auth = await requireAdmin();
-  if ("error" in auth) {
-    return NextResponse.json({ error: auth.error }, { status: auth.status });
-  }
+  if ("error" in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
   const body = await request.json();
@@ -109,9 +94,8 @@ export async function PUT(
     },
   });
 
-  // Log the action
   await logAction(
-    (auth.session.user as any).id,
+    (session.user as any).id,
     "user.update",
     id,
     JSON.stringify({ email: user.email, changes: body })
@@ -125,9 +109,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const auth = await requireAdmin();
-  if ("error" in auth) {
-    return NextResponse.json({ error: auth.error }, { status: auth.status });
-  }
+  if ("error" in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
 
@@ -136,9 +119,8 @@ export async function DELETE(
     return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
-  // Log before deletion
   await logAction(
-    (auth.session.user as any).id,
+    (session.user as any).id,
     "user.delete",
     id,
     JSON.stringify({ email: user.email })

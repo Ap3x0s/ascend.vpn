@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { adminAuthOptions } from "@/lib/admin-auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/db";
+import { logAction } from "@/lib/audit";
 
 export async function GET(request: NextRequest) {
-  const session = await getServerSession(adminAuthOptions);
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if ("error" in auth) return auth.error;
 
   const { searchParams } = new URL(request.url);
   const page = Math.max(1, Number(searchParams.get("page")) || 1);
@@ -42,10 +40,9 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const session = await getServerSession(adminAuthOptions);
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if ("error" in auth) return auth.error;
+  const session = auth.session;
 
   const body = await request.json();
 
@@ -68,6 +65,13 @@ export async function POST(request: NextRequest) {
       ping: 0,
     },
   });
+
+  await logAction(
+    session.user.id,
+    "server_created",
+    server.id,
+    `Created server ${server.name} (${server.ip})`
+  );
 
   return NextResponse.json({ server }, { status: 201 });
 }

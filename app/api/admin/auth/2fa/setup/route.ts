@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { generate2FASecret, generate2FAQRCode } from "@/lib/admin-auth";
+import { generate2FASecret, generate2FAQRCode, requireAdmin } from "@/lib/admin-auth";
+import { prisma } from "@/lib/db";
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession();
-
-    if (!session?.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const auth = await requireAdmin();
+    if ("error" in auth) return auth.error;
+    const session = auth.session;
 
     const adminId = (session.user as any).id;
 
@@ -18,8 +16,13 @@ export async function POST(request: NextRequest) {
 
     const qrCodeDataUrl = await generate2FAQRCode(otpauthUrl);
 
+    // Store secret in admin record immediately so it's never sent to client
+    await prisma.admin.update({
+      where: { id: adminId },
+      data: { twoFactorSecret: secret },
+    });
+
     return NextResponse.json({
-      secret,
       qrCode: qrCodeDataUrl,
     });
   } catch (error) {

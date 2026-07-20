@@ -1,16 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { adminAuthOptions } from "@/lib/admin-auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/db";
+import { logAction } from "@/lib/audit";
 
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await getServerSession(adminAuthOptions);
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if ("error" in auth) return auth.error;
 
   const { id } = await params;
 
@@ -27,10 +25,9 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await getServerSession(adminAuthOptions);
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if ("error" in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
   const body = await request.json();
@@ -51,6 +48,13 @@ export async function PUT(
     },
   });
 
+  await logAction(
+    session.user.id,
+    "server_updated",
+    id,
+    `Updated server ${updated.name}`
+  );
+
   return NextResponse.json({ server: updated });
 }
 
@@ -58,10 +62,9 @@ export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await getServerSession(adminAuthOptions);
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if ("error" in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
 
@@ -71,6 +74,13 @@ export async function DELETE(
   }
 
   await prisma.server.delete({ where: { id } });
+
+  await logAction(
+    session.user.id,
+    "server_deleted",
+    id,
+    `Deleted server ${server.name} (${server.ip})`
+  );
 
   return NextResponse.json({ success: true });
 }

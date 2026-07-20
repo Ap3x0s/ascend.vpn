@@ -28,12 +28,18 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(adminAuthOptions);
-  if (!session) {
+  if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Only superadmin can create admins
+  const role = (session.user as any)?.role;
+  if (role !== "superadmin") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   const body = await request.json();
-  const { email, password, role } = body;
+  const { email, password, role: newAdminRole } = body;
 
   if (!email || !password) {
     return NextResponse.json(
@@ -42,10 +48,45 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // Validate role: only allow 'admin'
+  if (newAdminRole && newAdminRole !== "admin") {
+    return NextResponse.json(
+      { error: "Допустимая роль: admin" },
+      { status: 400 }
+    );
+  }
+
+  // Password validation: min 12 chars, uppercase, lowercase, number
+  if (password.length < 12) {
+    return NextResponse.json(
+      { error: "Пароль должен содержать минимум 12 символов" },
+      { status: 400 }
+    );
+  }
+  if (!/[A-Z]/.test(password)) {
+    return NextResponse.json(
+      { error: "Пароль должен содержать хотя бы одну заглавную букву" },
+      { status: 400 }
+    );
+  }
+  if (!/[a-z]/.test(password)) {
+    return NextResponse.json(
+      { error: "Пароль должен содержать хотя бы одну строчную букву" },
+      { status: 400 }
+    );
+  }
+  if (!/[0-9]/.test(password)) {
+    return NextResponse.json(
+      { error: "Пароль должен содержать хотя бы одну цифру" },
+      { status: 400 }
+    );
+  }
+
   const existing = await prisma.admin.findUnique({ where: { email } });
   if (existing) {
+    // Generic error to prevent email enumeration
     return NextResponse.json(
-      { error: "Админ с таким email уже существует" },
+      { error: "Невозможно создать администратора" },
       { status: 409 }
     );
   }
@@ -56,7 +97,7 @@ export async function POST(request: NextRequest) {
     data: {
       email,
       passwordHash,
-      role: role || "admin",
+      role: "admin",
     },
     select: {
       id: true,

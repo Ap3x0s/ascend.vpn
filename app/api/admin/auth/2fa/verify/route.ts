@@ -1,14 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { activate2FA, adminAuthOptions } from "@/lib/admin-auth";
+import { activate2FA, requireAdmin } from "@/lib/admin-auth";
 import { rateLimit } from "@/lib/rate-limit";
 import { logAction } from "@/lib/audit";
+import { prisma } from "@/lib/db";
 
 export async function POST(request: NextRequest) {
   try {
-    // Rate limit: 5 attempts per minute
+    const auth = await requireAdmin();
+    if ("error" in auth) return auth.error;
+    const session = auth.session;
+
+    const adminId = (session.user as any).id;
     const ip = request.headers.get("x-forwarded-for") || "unknown";
-    const { allowed } = rateLimit(`2fa-verify-${ip}`, 5, 60000);
+
+    // Rate limit by admin ID instead of IP
+    const { allowed } = rateLimit(`2fa-verify-${adminId}`, 5, 60000);
 
     if (!allowed) {
       return NextResponse.json(
@@ -17,34 +23,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const session = await getServerSession(adminAuthOptions);
-
-    if (!session?.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    // Verify admin role
-    const role = (session.user as any)?.role;
-    if (role !== "admin" && role !== "superadmin") {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
-
     const body = await request.json();
-    const { secret, token } = body;
+    const { token } = body;
 
-    if (!secret || !token) {
+    if (!token) {
       return NextResponse.json(
-        { error: "Secret and token are required" },
+        { error: "Token is required" },
         { status: 400 }
       );
     }
 
-    const adminId = (session.user as any).id;
+    // Retrieve secret from database instead of trusting client
+    const admin = await prisma.admin.findUnique({
+      where: { id: adminId },
+      select: { twoFactorSecret: true },
+    });
 
-    const success = await activate2FA(adminId, secret, token);
+    if (!admin?.twoFactorSecret) {
+      return NextResponse.json(
+        { error: "2FA not initialized. Please set up 2FA first." },
+        { status: 400 }
+      );
+    }
+
+    const success = await activate2FA(adminId, admin.twoFactorSecret, token);
 
     if (!success) {
-      // Log failed attempt
       await logAction(
         adminId,
         "2fa.verify_failed",
@@ -58,7 +62,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Log successful activation
     await logAction(
       adminId,
       "2fa.activated",

@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { adminAuthOptions } from "@/lib/admin-auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/db";
+import { logAction } from "@/lib/audit";
 
 export async function GET() {
-  const session = await getServerSession(adminAuthOptions);
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if ("error" in auth) return auth.error;
 
   const news = await prisma.news.findMany({
     orderBy: { createdAt: "desc" },
@@ -22,10 +20,9 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  const session = await getServerSession(adminAuthOptions);
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if ("error" in auth) return auth.error;
+  const session = auth.session;
 
   const adminId = (session.user as any).id;
 
@@ -47,6 +44,13 @@ export async function POST(request: NextRequest) {
       authorId: adminId,
     },
   });
+
+  await logAction(
+    adminId,
+    "news_created",
+    news.id,
+    `Created news: ${news.title}`
+  );
 
   return NextResponse.json({ news }, { status: 201 });
 }

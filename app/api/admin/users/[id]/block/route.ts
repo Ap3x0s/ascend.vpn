@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { adminAuthOptions } from "@/lib/admin-auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/db";
 import { logAction } from "@/lib/audit";
 
@@ -8,16 +7,9 @@ export async function POST(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await getServerSession(adminAuthOptions);
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  // Verify admin role
-  const role = (session.user as any)?.role;
-  if (role !== "admin" && role !== "superadmin") {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+  const auth = await requireAdmin();
+  if ("error" in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
 
@@ -39,7 +31,6 @@ export async function POST(
     },
   });
 
-  // Log the action
   await logAction(
     (session.user as any).id,
     action,
